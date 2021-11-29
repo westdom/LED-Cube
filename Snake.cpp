@@ -57,6 +57,20 @@ Snake::Snake(String snakeColour, String pelletColour, bool pelletOn, bool travel
   setup();
 }
 
+void Snake::update() {      
+  // put your main code here, to run repeatedly:
+  static String backgroundColour = "BLACK";
+  static int noOfPositionsToDisplay = pelletOn ? snakeLength + 1 : snakeLength;
+  setCubeToPositionsColours(positions, noOfPositionsToDisplay, rgbColours, backgroundColour);
+  moveSnakeHeadAndPellet();
+  moveSnakeTail();
+  setPositionsMatrix();
+}
+
+String Snake::getType() {
+  return "Snake";
+}
+
 void Snake::setup() {
   // put your setup code here, to run once:
   pinMode(LED_PIN, INPUT);
@@ -72,16 +86,6 @@ void Snake::setup() {
       }
     }
   }
-}
-
-void Snake::update() {      
-  // put your main code here, to run repeatedly:
-  static String backgroundColour = "BLACK";
-  static int noOfPositionsToDisplay = pelletOn ? snakeLength + 1 : snakeLength;
-  setCubeToPositionsColours(positions, noOfPositionsToDisplay, rgbColours, backgroundColour);
-  moveSnakeHeadAndPellet();
-  moveSnakeTail();
-  setPositionsMatrix();
 }
 
 void Snake::setPositionsMatrix() {

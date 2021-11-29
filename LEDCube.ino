@@ -1,3 +1,4 @@
+#include "Pattern.h"
 #include "Snake.h"
 
 unsigned long start_time;
@@ -11,7 +12,7 @@ int buttonState = 0;
 int noOfLEDCubePatterns = 1;
 int selectedPattern = 0;
 
-Snake snake("GREEN", "MAGENTA", true, false);
+Pattern *pattern;
 
 void setup() {
   pinMode(buttonPin, INPUT);
@@ -27,9 +28,12 @@ void loop() {
     start_time = current_time;
     switch(selectedPattern) {
       case 0:
-        snake.update();
+        if(!pattern->getType().equals("Snake")) {
+          pattern = new Snake("GREEN", "MAGENTA", true, false);
+        }
         break;
     }
+    pattern->update();
   }
 }
 

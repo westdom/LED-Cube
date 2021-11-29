@@ -1,9 +1,10 @@
 #ifndef Snake_H
 #define Snake_H
 
+#include "Pattern.h"
 #include <Arduino.h>
 
-class Snake {
+class Snake: public Pattern {
 
   String snakeColour;
   String pelletColour;
@@ -12,7 +13,8 @@ class Snake {
   
   public:
     Snake(String snakeColour, String pelletColour, bool pelletOn, bool travelThroughWallsOn);
-    void update();
+    virtual void update();
+    virtual String getType();
     
   private:
     void setup();
