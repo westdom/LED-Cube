@@ -6,15 +6,16 @@
 
 class Snake: public Pattern {
 
+  String snakeName;
   String snakeColour;
   String pelletColour;
   bool pelletOn;
   bool travelThroughWallsOn;
   
   public:
-    Snake(String snakeColour, String pelletColour, bool pelletOn, bool travelThroughWallsOn);
+    Snake(String snakeName, String snakeColour, String pelletColour, bool pelletOn, bool travelThroughWallsOn);
     virtual void update();
-    virtual String getType();
+    virtual String getName();
     
   private:
     void setup();

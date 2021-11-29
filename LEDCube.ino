@@ -1,15 +1,16 @@
 #include "Pattern.h"
 #include "Snake.h"
 
+const int potentiometerPin = A1;
+const int buttonPin = 2;
+const int noOfLEDCubePatterns = 3;
+
 unsigned long start_time;
 unsigned long current_time;
-unsigned long lastDebounceTime = 0;  // the last time the output pin was toggled
-unsigned long debounceDelay = 100;    // the debounce time; increase if the output flickers
-int lastButtonState = LOW;   // the previous reading from the input pin
-int potentiometerPin = A1; // the analog input pin attach to
-int buttonPin = 2;     // the number of the pushbutton pin
+unsigned long lastDebounceTime = 0;  // the last time the buttons pin was toggled
+unsigned long debounceDelay = 100;   // the debounce time; increase if the output flickers
+int lastButtonState = LOW;
 int buttonState = 0;
-int noOfLEDCubePatterns = 1;
 int selectedPattern = 0;
 
 Pattern *pattern;
@@ -28,8 +29,21 @@ void loop() {
     start_time = current_time;
     switch(selectedPattern) {
       case 0:
-        if(!pattern->getType().equals("Snake")) {
-          pattern = new Snake("GREEN", "MAGENTA", true, false);
+        if(!pattern->getName().equals("Green Snake")) {
+          delete pattern;
+          pattern = new Snake("Green Snake", "GREEN", "MAGENTA", true, false);
+        }
+        break;
+      case 1:
+        if(!pattern->getName().equals("Yellow Snake")) {
+          delete pattern;
+          pattern = new Snake("Yellow Snake", "YELLOW", "MAGENTA", true, false);
+        }
+        break;
+      case 2:
+        if(!pattern->getName().equals("Red Snake")) {
+          delete pattern;
+          pattern = new Snake("Red Snake", "RED", "MAGENTA", true, false);
         }
         break;
     }

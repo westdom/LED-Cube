@@ -6,7 +6,7 @@
 class Pattern {
     public:
         virtual void update();
-        virtual String getType();
+        virtual String getName();
 };
 
 #endif
