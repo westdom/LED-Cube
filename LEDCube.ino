@@ -8,7 +8,7 @@ const int noOfLEDCubePatterns = 3;
 unsigned long start_time;
 unsigned long current_time;
 unsigned long lastDebounceTime = 0;  // the last time the buttons pin was toggled
-unsigned long debounceDelay = 100;   // the debounce time; increase if the output flickers
+unsigned long debounceDelay = 100;   // the debounce time; increase/decrease accordingly if button presses seem dodgey
 int lastButtonState = LOW;
 int buttonState = 0;
 int selectedPattern = 0;
@@ -25,8 +25,11 @@ void loop() {
   checkButton();
   current_time = millis();
   int delay = analogRead(potentiometerPin);
+  // Rather than using the delay() function here, a check for if enough time has expired allows us to continue running code (essential for continously checking button presses/potentiometer changes).
+  // This is because delay() is whats known as a "blocking" delay.
   if(current_time - start_time >= delay) {
     start_time = current_time;
+    // Strategy design pattern. When we switch pattern via the button, we discard the previous reference of the pattern object from memory, and asign a new pattern dynamically (aka at run time).
     switch(selectedPattern) {
       case 0:
         if(!pattern->getName().equals("Green Snake")) {
@@ -47,6 +50,7 @@ void loop() {
         }
         break;
     }
+    // Because all the patterns implement the "Pattern.h" interface, this update function runs the update function for the currently selected pattern.
     pattern->update();
   }
 }
@@ -56,6 +60,7 @@ void checkButton() {
   if(reading != lastButtonState) {
     lastDebounceTime = millis();
   }
+  // Debouncing should mean button presses are more accurate in changing the selected pattern.
   if ((millis() - lastDebounceTime) > debounceDelay) {
     if (reading != buttonState) {
       buttonState = reading;

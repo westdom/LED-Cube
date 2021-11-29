@@ -27,10 +27,10 @@ const static int cubeMapping[cubeSize][cubeSize][cubeSize][dimensions] = {
     { {0, 2, 2}, {1, 2, 2}, {2, 2, 2} }
   }
 };
-const static int sizeOfLegalMoves = 6;
-String legalMoves[sizeOfLegalMoves] = { "LEFT", "RIGHT", "DOWN", "UP", "BACKWARDS", "FORWARDS" };
 const String colours[16] =         { "BLACK",   "WHITE",   "RED",     "LIME",    "BLUE",    "YELLOW",  "CYAN",    "MAGENTA", "SILVER",        "GRAY",          "MAROON",    "OLIVE",       "GREEN",     "PURPLE",      "TEAL",        "NAVY" };
 const int rgbColourValues[16][3] = { {0, 0, 0}, {b, b, b}, {b, 0, 0}, {0, b, 0}, {0, 0, b}, {b, b, 0}, {0, b, b}, {b, 0, b}, {192, 192, 192}, {128, 128, 128}, {128, 0, 0}, {128, 128, 0}, {0, 128, 0}, {128, 0, 128}, {0, 128, 128}, {0, 0, 128} };
+const static int sizeOfLegalMoves = 6;
+String legalMoves[sizeOfLegalMoves] = { "LEFT", "RIGHT", "DOWN", "UP", "BACKWARDS", "FORWARDS" };
 
 //Variables
 int head[dimensions] = {2, 0, 0};
@@ -47,7 +47,6 @@ int positions[snakeLength + 1][dimensions] = {
     {2, 2, 2}
 };
 int rgbColours[4][3];
-
 
 Snake::Snake(String snakeName, String snakeColour, String pelletColour, bool pelletOn, bool travelThroughWallsOn) {
   this->snakeColour = snakeColour;

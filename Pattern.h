@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 
+// Interface that forces classes which implement it must have the "update" and "getName" functions.
 class Pattern {
     public:
         virtual void update();

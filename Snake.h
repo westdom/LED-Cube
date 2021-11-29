@@ -4,6 +4,7 @@
 #include "Pattern.h"
 #include <Arduino.h>
 
+// Interface for the Snake pattern. Implements the Pattern Interface, and defines what methods are required for "Snake.cpp".
 class Snake: public Pattern {
 
   String snakeName;
