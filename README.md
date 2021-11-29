@@ -1,3 +1,7 @@
+# Development
+
+To interact with the Arduino board, we can use the commands provided to us by the `Arduino` extension. To explore the available commands, press `F1` and search for `Arduino`. The primary command we'll be using is `Arduino: Upload` which should function the same way as the native Arduino IDE.
+
 # Visual Studio Code set up:
 
 ## Extensions
