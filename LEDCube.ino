@@ -22,8 +22,8 @@ void setup() {
 }
 
 void loop() {
-  checkButton();
   current_time = millis();
+  checkButton();
   int delay = analogRead(potentiometerPin);
   // Rather than using the delay() function here, a check for if enough time has expired allows us to continue running code (essential for continously checking button presses/potentiometer changes).
   // This is because delay() is whats known as a "blocking" delay.
