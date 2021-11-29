@@ -49,6 +49,7 @@ int positions[snakeLength + 1][dimensions] = {
 int rgbColours[4][3];
 
 Snake::Snake(String snakeName, String snakeColour, String pelletColour, bool pelletOn, bool travelThroughWallsOn) {
+  this->name = snakeName;
   this->snakeColour = snakeColour;
   this->pelletColour = pelletColour;
   this->pelletOn = pelletOn;
@@ -64,10 +65,6 @@ void Snake::update() {
   moveSnakeHeadAndPellet();
   moveSnakeTail();
   setPositionsMatrix();
-}
-
-String Snake::getName() {
-  return snakeName;
 }
 
 void Snake::setup() {

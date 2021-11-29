@@ -7,7 +7,6 @@
 // Interface for the Snake pattern. Implements the Pattern Interface, and defines what methods are required for "Snake.cpp".
 class Snake: public Pattern {
 
-  String snakeName;
   String snakeColour;
   String pelletColour;
   bool pelletOn;
@@ -16,7 +15,6 @@ class Snake: public Pattern {
   public:
     Snake(String snakeName, String snakeColour, String pelletColour, bool pelletOn, bool travelThroughWallsOn);
     virtual void update();
-    virtual String getName();
     
   private:
     void setup();

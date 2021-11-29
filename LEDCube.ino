@@ -7,8 +7,8 @@ const int noOfLEDCubePatterns = 3;
 
 unsigned long start_time;
 unsigned long current_time;
-unsigned long lastDebounceTime = 0;  // the last time the buttons pin was toggled
-unsigned long debounceDelay = 100;   // the debounce time; increase/decrease accordingly if button presses seem dodgey
+unsigned long lastDebounceTime = 0;  // the last time the buttons pin was toggled.
+unsigned long debounceDelay = 100;   // the debounce time; increase/decrease accordingly if button presses seem dodgey.
 int lastButtonState = LOW;
 int buttonState = 0;
 int selectedPattern = 0;
