@@ -8,15 +8,9 @@ class Pattern {
 
     // Public means if you have a reference to an object of type Pattern, you can invoke the below functions on that object.
     public:
-
-        String name;
-
         // Virtual forces classes that implement this interface to override these functions.
         virtual void update();
-        
-        String getName() {
-            return name;
-        };
+        virtual String getName();
 };
 
 #endif

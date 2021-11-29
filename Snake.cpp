@@ -67,6 +67,10 @@ void Snake::update() {
   setPositionsMatrix();
 }
 
+String Snake::getName() {
+  return name;
+}
+
 void Snake::setup() {
   // put your setup code here, to run once:
   pinMode(LED_PIN, INPUT);
