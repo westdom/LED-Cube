@@ -22,8 +22,9 @@ Libraries are imported packages of code that allows us to use predefined functio
 ### Set up:
 
 1. In the newly created `.vscode` folder, create a file named `c_cpp_properties.json`
-2. Copy in the following text (make sure to replace `{Path to Arduino}` with the proper path, for me it was `C:/Program Files (x86)/Arduino`):
- ```{
+2. Copy in the following text (make sure to replace both instances of `{Path to Arduino}` with the proper path, for me it was `C:/Program Files (x86)/Arduino`):
+ ```
+ {
     "configurations": [
         {
             "name": "Win32",
