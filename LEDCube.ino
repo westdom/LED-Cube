@@ -10,7 +10,6 @@ unsigned long lastDebounceTime = 0; // the last time the buttons pin was toggled
 unsigned long debounceDelay = 100;  // the debounce time; increase/decrease accordingly if button presses seem dodgey.
 int lastButtonState = LOW;
 int buttonState = 0;
-int selectedPattern = 0;
 
 Pattern *pattern;
 
@@ -50,7 +49,6 @@ void checkIfButtonPressed()
       buttonState = reading;
       if (buttonState == HIGH)
       {
-        selectedPattern++;
         updateSelectedPattern();
       }
     }
@@ -60,10 +58,14 @@ void checkIfButtonPressed()
 // Strategy design pattern. When we switch pattern via the button, we discard the previous reference of the pattern object from memory, and asign a new pattern dynamically (aka at run time).
 void updateSelectedPattern()
 {
+  static int selectedPattern = 0;
+
+  selectedPattern++;
   if (selectedPattern != 0)
   {
     delete pattern;
   }
+  
   switch (selectedPattern)
   {
   case 0:
@@ -79,7 +81,7 @@ void updateSelectedPattern()
     pattern = new Snake("Rainbow Snake", true, false);
     break;
   default:
-    selectedPattern = 0;
+    selectedPattern = -1;
     updateSelectedPattern();
     break;
   }
