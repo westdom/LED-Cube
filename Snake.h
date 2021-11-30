@@ -2,12 +2,12 @@
 #define Snake_H
 
 #include "Pattern.h"
-#include <Arduino.h>
 
 // Interface for the Snake pattern. Implements the Pattern Interface, and defines what methods are required for "Snake.cpp".
 class Snake : public Pattern
 {
 
+  CRGB leds[27];
   String name;
   String snakeColour;
   String pelletColour;
@@ -42,8 +42,6 @@ private:
   bool arrayEquals(const int arr1[], int arr1Size, const int arr2[], int arr2Size);
   bool matrixContains(int matrix[][3], int matrixSize, int arr[3]);
   int findIndexOfString(String string, const String arr[], int arrSize);
-  void sendColour(byte r, byte g, byte b);
-  void sendByte(byte b);
 };
 
 #endif

@@ -84,7 +84,7 @@ String Snake::getName()
 void Snake::setup()
 {
   // put your setup code here, to run once:
-  pinMode(LED_PIN, INPUT);
+  FastLED.addLeds<NEOPIXEL, LED_PIN>(leds, 27);
   Serial.begin(9600);
   randomSeed(analogRead(0));
   for (int x = 0; x < 4; x++)
@@ -417,8 +417,11 @@ void Snake::setCubeToPositionsColours(int positions[][3], int noOfPositions, int
 
   for (int i = 0; i < 27; i++)
   {
-    sendColour(coloursQueue[i][0], coloursQueue[i][1], coloursQueue[i][2]);
+    leds[i].red = coloursQueue[i][0];
+    leds[i].green = coloursQueue[i][1];
+    leds[i].blue = coloursQueue[i][2];
   }
+  FastLED.show();
 }
 
 // Returns true if arr1 has equal values to arr2, else false
@@ -461,38 +464,4 @@ int Snake::findIndexOfString(String string, const String arr[], int arrSize)
     }
   }
   return -1;
-}
-
-void Snake::sendColour(byte r, byte g, byte b)
-{
-  sendByte(b); // we send the blue first
-  sendByte(g); // then the green
-  sendByte(r); // then the blue
-}
-
-void Snake::sendByte(byte b)
-{
-  // each byte is sent LSB first and is 8 bits long
-  for (int n = 7; n >= 0; n--)
-  {
-    // if we have a high bit, set up the digitalWrite first, then make the pin an output
-    // this will engage the 10K internal pullup resistor, but in compariosn to our 1K potential divider, this shouldn't affect the logic level
-    if (bitRead(b, n))
-    {
-      digitalWrite(LED_PIN, HIGH);
-      pinMode(LED_PIN, OUTPUT);
-      delayMicroseconds(DELAY);
-      pinMode(LED_PIN, INPUT);
-      delayMicroseconds(DELAY);
-    }
-    // otherwise, if we have a low bit, make the pin an output first and then check it is LOW
-    else
-    {
-      pinMode(LED_PIN, OUTPUT);
-      digitalWrite(LED_PIN, LOW);
-      delayMicroseconds(DELAY);
-      pinMode(LED_PIN, INPUT);
-      delayMicroseconds(DELAY);
-    }
-  }
 }

@@ -2,6 +2,7 @@
 #define Pattern_H
 
 #include <Arduino.h>
+#include <FastLED.h>
 
 // Interface that forces classes which implement it to have the "update" and "getName" functions.
 class Pattern
