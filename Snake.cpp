@@ -5,12 +5,12 @@
 
 // Constants
 const static int MAX_BRIGHTNESS = 50;
-const static int dimensions = 3;
-const static int cubeSize = 3;
-const static int snakeLength = 3;
-const static int cubeAxisUpperBound = cubeSize - 1;
-const static int cubeAxisLowerBound = 0;
-const static int cubeMapping[cubeSize][cubeSize][cubeSize][dimensions] = {
+const static int DIMENSIONS = 3;
+const static int CUBE_SIZE = 3;
+const static int SNAKE_LENGTH = 3;
+const static int CUBE_AXIS_UPPER_BOUND = CUBE_SIZE - 1;
+const static int CUBE_AXIS_LOWER_BOUND = 0;
+const static int CUBE_MAPPINGS[CUBE_SIZE][CUBE_SIZE][CUBE_SIZE][DIMENSIONS] = {
     {{{0, 0, 0}, {1, 0, 0}, {2, 0, 0}},
      {{2, 1, 0}, {1, 1, 0}, {0, 1, 0}},
      {{0, 2, 0}, {1, 2, 0}, {2, 2, 0}}},
@@ -20,43 +20,43 @@ const static int cubeMapping[cubeSize][cubeSize][cubeSize][dimensions] = {
     {{{0, 0, 2}, {1, 0, 2}, {2, 0, 2}},
      {{2, 1, 2}, {1, 1, 2}, {0, 1, 2}},
      {{0, 2, 2}, {1, 2, 2}, {2, 2, 2}}}};
-const String colours[8] = {"BLACK", "WHITE", "RED", "LIME", "BLUE", "YELLOW", "CYAN", "MAGENTA"};
-const int rgbColourValues[8][3] = {{0, 0, 0}, {MAX_BRIGHTNESS, MAX_BRIGHTNESS, MAX_BRIGHTNESS}, {MAX_BRIGHTNESS, 0, 0}, {0, MAX_BRIGHTNESS, 0}, {0, 0, MAX_BRIGHTNESS}, {MAX_BRIGHTNESS, MAX_BRIGHTNESS, 0}, {0, MAX_BRIGHTNESS, MAX_BRIGHTNESS}, {MAX_BRIGHTNESS, 0, MAX_BRIGHTNESS}};
-const static int sizeOfLegalMoves = 6;
-String legalMoves[sizeOfLegalMoves] = {"LEFT", "RIGHT", "DOWN", "UP", "BACKWARDS", "FORWARDS"};
+const String COLOURS[8] = {"BLACK", "WHITE", "RED", "LIME", "BLUE", "YELLOW", "CYAN", "MAGENTA"};
+const int RGB_COLOUR_VALUES[8][3] = {{0, 0, 0}, {MAX_BRIGHTNESS, MAX_BRIGHTNESS, MAX_BRIGHTNESS}, {MAX_BRIGHTNESS, 0, 0}, {0, MAX_BRIGHTNESS, 0}, {0, 0, MAX_BRIGHTNESS}, {MAX_BRIGHTNESS, MAX_BRIGHTNESS, 0}, {0, MAX_BRIGHTNESS, MAX_BRIGHTNESS}, {MAX_BRIGHTNESS, 0, MAX_BRIGHTNESS}};
+const static int SIZE_OF_LEGAL_MOVES = 6;
+String LEGAL_MOVES[SIZE_OF_LEGAL_MOVES] = {"LEFT", "RIGHT", "DOWN", "UP", "BACKWARDS", "FORWARDS"};
 
 // Variables
-int head[dimensions] = {2, 0, 0};
-int tail[snakeLength][dimensions] = {
+int head[DIMENSIONS] = {2, 0, 0};
+int tail[SNAKE_LENGTH][DIMENSIONS] = {
     {2, 0, 0},
     {1, 0, 0},
     {0, 0, 0}};
-int pellet[dimensions] = {2, 2, 2};
-int positions[snakeLength + 1][dimensions] = {
+int pellet[DIMENSIONS] = {2, 2, 2};
+int positions[SNAKE_LENGTH + 1][DIMENSIONS] = {
     {2, 0, 0},
     {1, 0, 0},
     {0, 0, 0},
     {2, 2, 2}};
-int rgbColours[4][3];
+int ledOnColours[4][3];
 
-Snake::Snake(String snakeName, String snakeColour, String pelletColour, bool pelletOn, bool travelThroughWallsOn)
+Snake::Snake(const String SNAKE_NAME, const String SNAKE_COLOUR, const String PELLET_COLOUR, const bool PELLET_ON, const bool TRAVEL_THROUGH_WALLS_ON)
 {
-  this->name = snakeName;
-  this->snakeColour = snakeColour;
-  this->pelletColour = pelletColour;
-  this->pelletOn = pelletOn;
-  this->travelThroughWallsOn = travelThroughWallsOn;
+  this->name = SNAKE_NAME;
+  this->snakeColour = SNAKE_COLOUR;
+  this->pelletColour = PELLET_COLOUR;
+  this->pelletOn = PELLET_ON;
+  this->travelThroughWallsOn = TRAVEL_THROUGH_WALLS_ON;
   this->rainbowSnake = false;
   setup();
 }
 
-Snake::Snake(String snakeName, bool pelletOn, bool travelThroughWallsOn)
+Snake::Snake(const String SNAKE_NAME, const bool PELLET_ON, const bool TRAVEL_THROUGH_WALLS_ON)
 {
-  this->name = snakeName;
+  this->name = SNAKE_NAME;
   this->snakeColour = "GREEN";
   this->pelletColour = "MAGENTA";
-  this->pelletOn = pelletOn;
-  this->travelThroughWallsOn = travelThroughWallsOn;
+  this->pelletOn = PELLET_ON;
+  this->travelThroughWallsOn = TRAVEL_THROUGH_WALLS_ON;
   this->rainbowSnake = true;
   setup();
 }
@@ -64,9 +64,9 @@ Snake::Snake(String snakeName, bool pelletOn, bool travelThroughWallsOn)
 void Snake::update()
 {
   // put your main code here, to run repeatedly:
-  static String backgroundColour = "BLACK";
-  static int noOfPositionsToDisplay = pelletOn ? snakeLength + 1 : snakeLength;
-  setCubeToPositionsColours(positions, noOfPositionsToDisplay, rgbColours, backgroundColour);
+  const static String BACKGROUND_COLOUR = "BLACK";
+  const static int NUMBER_OF_LEDS_TO_DISPLAY = pelletOn ? SNAKE_LENGTH + 1 : SNAKE_LENGTH;
+  setCubeToPositionsColours(positions, NUMBER_OF_LEDS_TO_DISPLAY, ledOnColours, BACKGROUND_COLOUR);
   moveSnakeHeadAndPellet();
   moveSnakeTail();
   setPositionsMatrix();
@@ -84,8 +84,7 @@ String Snake::getName()
 void Snake::setup()
 {
   // put your setup code here, to run once:
-  FastLED.addLeds<NEOPIXEL, LED_PIN>(leds, 27);
-  Serial.begin(9600);
+  FastLED.addLeds<NEOPIXEL, LED_PIN>(LEDS, 27);
   randomSeed(analogRead(0));
   for (int x = 0; x < 4; x++)
   {
@@ -93,11 +92,11 @@ void Snake::setup()
     {
       if (x < 3)
       {
-        rgbColours[x][y] = rgbColourValues[findIndexOfString(snakeColour, colours, 16)][y];
+        ledOnColours[x][y] = RGB_COLOUR_VALUES[findIndexOfString(snakeColour, COLOURS, 16)][y];
       }
       else
       {
-        rgbColours[x][y] = rgbColourValues[findIndexOfString(pelletColour, colours, 16)][y];
+        ledOnColours[x][y] = RGB_COLOUR_VALUES[findIndexOfString(pelletColour, COLOURS, 16)][y];
       }
     }
   }
@@ -106,32 +105,32 @@ void Snake::setup()
 void Snake::setPositionsMatrix()
 {
   // Copy tail -> positions
-  for (int i = 0; i < snakeLength; i++)
+  for (int i = 0; i < SNAKE_LENGTH; i++)
   {
-    for (int j = 0; j < dimensions; j++)
+    for (int j = 0; j < DIMENSIONS; j++)
     {
       positions[i][j] = tail[i][j];
     }
   }
   // Copy pellet -> positions
-  for (int i = 0; i < dimensions; i++)
+  for (int i = 0; i < DIMENSIONS; i++)
   {
-    positions[snakeLength][i] = pellet[i];
+    positions[SNAKE_LENGTH][i] = pellet[i];
   }
 }
 
 void Snake::moveSnakeTail()
 {
   // Shifts the tail array so that the end of the tail becomes the second to last segment of the tail, the second to last segment of the tail becomes the third to last, etc...
-  for (int i = snakeLength - 1; i > 0; i--)
+  for (int i = SNAKE_LENGTH - 1; i > 0; i--)
   {
-    for (int j = 0; j < cubeSize; j++)
+    for (int j = 0; j < CUBE_SIZE; j++)
     {
       tail[i][j] = tail[i - 1][j];
     }
   }
   // Replaces the start of the tail with the new head
-  for (int i = 0; i < cubeSize; i++)
+  for (int i = 0; i < CUBE_SIZE; i++)
   {
     tail[0][i] = head[i];
   }
@@ -140,12 +139,12 @@ void Snake::moveSnakeTail()
 void Snake::moveSnakeHeadAndPellet()
 {
   bool moves[] = {false, false, false, false, false, false};
-  setPossibleMoves(moves, legalMoves, sizeOfLegalMoves);
+  setPossibleMoves(moves, LEGAL_MOVES, SIZE_OF_LEGAL_MOVES);
   if (pelletOn)
   {
-    if (!moveHeadToPill(moves, legalMoves, sizeOfLegalMoves))
+    if (!moveHeadToPill(moves, LEGAL_MOVES, SIZE_OF_LEGAL_MOVES))
     {
-      moveHeadInRandomValidDir(moves, legalMoves);
+      moveHeadInRandomValidDir(moves, LEGAL_MOVES);
     }
     else
     {
@@ -154,7 +153,7 @@ void Snake::moveSnakeHeadAndPellet()
   }
   else
   {
-    moveHeadInRandomValidDir(moves, legalMoves);
+    moveHeadInRandomValidDir(moves, LEGAL_MOVES);
   }
 }
 
@@ -168,13 +167,13 @@ void Snake::shiftColours()
   if (colourIndex == 0)
   {
     // Reset rgbColours
-    rgbColour[0] = rgbColours[0][0];
-    rgbColour[1] = rgbColours[0][1];
-    rgbColour[2] = rgbColours[0][2];
+    rgbColour[0] = ledOnColours[0][0];
+    rgbColour[1] = ledOnColours[0][1];
+    rgbColour[2] = ledOnColours[0][2];
   }
 
   colourIndex++;
-  if (colourIndex == 256)
+  if (colourIndex == MAX_BRIGHTNESS)
   {
     colourIndex = 0;
 
@@ -188,85 +187,85 @@ void Snake::shiftColours()
     }
   }
   // Increment/decrement respective bytes of rgbColour
-  static int incrementBy = 10;
-  rgbColour[decColour] -= incrementBy;
-  rgbColour[incColour] += incrementBy;
+  const static int INCREMENT_BY = 10;
+  rgbColour[decColour] -= INCREMENT_BY;
+  rgbColour[incColour] += INCREMENT_BY;
 
   // Copy new rgbcolour to the snakes colours
-  for (int i = 0; i < snakeLength; i++)
+  for (int i = 0; i < SNAKE_LENGTH; i++)
   {
-    rgbColours[0][i] = rgbColour[i];
-    rgbColours[1][i] = rgbColour[i];
-    rgbColours[2][i] = rgbColour[i];
+    ledOnColours[0][i] = rgbColour[i];
+    ledOnColours[1][i] = rgbColour[i];
+    ledOnColours[2][i] = rgbColour[i];
   }
 }
 
 // Calculates the possible moves and stores it into the moves boolean array
-void Snake::setPossibleMoves(bool moves[], String legalMoves[], int legalMovesSize)
+void Snake::setPossibleMoves(bool moves[], String legalMoves[], const int LEGAL_MOVES_SIZE)
 {
-  for (int i = 0; i < legalMovesSize; i++)
+  for (int i = 0; i < LEGAL_MOVES_SIZE; i++)
   {
     String move = legalMoves[i];
-    int moveIndex = findIndexOfString(move, legalMoves, legalMovesSize);
+    int moveIndex = findIndexOfString(move, legalMoves, LEGAL_MOVES_SIZE);
     moves[moveIndex] = canMove(move);
   }
 }
 
-bool Snake::canMove(String move)
+bool Snake::canMove(const String MOVE)
 {
   bool canMove = false;
-  int axis = getAxisIndex(move);
+  const int AXIS = getAxisIndex(MOVE);
   // If we can increment/decrement for the supplied move without breaking through the cubes dimensions
-  if (travelThroughWallsOn || (isIncrementMove(move) ? (head[axis] < cubeAxisUpperBound) : (head[axis] > cubeAxisLowerBound)))
+  if (travelThroughWallsOn || (isIncrementMove(MOVE) ? (head[AXIS] < CUBE_AXIS_UPPER_BOUND) : (head[AXIS] > CUBE_AXIS_LOWER_BOUND)))
   {
-    int originalCoordinate = head[axis];
-    head[axis] += getAxisDirection(move);
+    int originalCoordinate = head[AXIS];
+    head[AXIS] += getAxisDirection(MOVE);
     if (travelThroughWallsOn)
     {
-      if (head[axis] < cubeAxisLowerBound)
+      if (head[AXIS] < CUBE_AXIS_LOWER_BOUND)
       {
-        head[axis] = cubeAxisUpperBound;
+        head[AXIS] = CUBE_AXIS_UPPER_BOUND;
       }
-      else if (head[axis] > cubeAxisUpperBound)
+      else if (head[AXIS] > CUBE_AXIS_UPPER_BOUND)
       {
-        head[axis] = cubeAxisLowerBound;
+        head[AXIS] = CUBE_AXIS_LOWER_BOUND;
       }
     }
     // If this position is not a part of the tail, we can move there
-    canMove = !matrixContains(tail, snakeLength, head);
-    head[axis] = originalCoordinate;
+    canMove = !matrixContains(tail, SNAKE_LENGTH, head);
+    head[AXIS] = originalCoordinate;
   }
   return canMove;
 }
 
 // Returns true if the head was adjacent to the pellet and has moved there, else false
-bool Snake::moveHeadToPill(bool validMoves[], String legalMoves[], int legalMovesSize)
+bool Snake::moveHeadToPill(bool validMoves[], String legalMoves[], const int LEGAL_MOVES_SIZE)
 {
-  for (int i = 0; i < legalMovesSize; i++)
+  for (int i = 0; i < LEGAL_MOVES_SIZE; i++)
   {
-    String move = legalMoves[i];
+    const String MOVE = legalMoves[i];
     if (validMoves[i])
     {
-      int axis = getAxisIndex(move);
-      int axisDirection = getAxisDirection(move);
-      int originalCoordinate = head[axis];
-      head[axis] += axisDirection;
+      const int AXIS = getAxisIndex(MOVE);
+      const int AXIS_DIRECTION = getAxisDirection(MOVE);
+      const int ORIGINAL_COORDINATE = head[AXIS];
+      head[AXIS] += AXIS_DIRECTION;
       if (travelThroughWallsOn)
       {
-        if (head[axis] < cubeAxisLowerBound)
+        if (head[AXIS] < CUBE_AXIS_LOWER_BOUND)
         {
-          head[axis] = cubeAxisUpperBound;
+          head[AXIS] = CUBE_AXIS_UPPER_BOUND;
         }
-        else if (head[axis] > cubeAxisUpperBound)
+        else if (head[AXIS] > CUBE_AXIS_UPPER_BOUND)
         {
-          head[axis] = cubeAxisLowerBound;
+          head[AXIS] = CUBE_AXIS_LOWER_BOUND;
         }
       }
       if (arrayEquals(head, 3, pellet, 3))
       {
         return true;
       }
-      head[axis] = originalCoordinate;
+      head[AXIS] = ORIGINAL_COORDINATE;
     }
   }
   return false;
@@ -279,23 +278,23 @@ void Snake::moveHeadInRandomValidDir(bool validMoves[], String legalMoves[])
   while (!validMoveFound)
   {
     // Create a random number between 0 - 5
-    int randomNumber = random(0, 6);
+    const int RANDOM_NUMBER = random(0, 6);
     // If the random number maps to a possible move, perform the move and exit the loop. Else create new random number
-    if (validMoves[randomNumber])
+    if (validMoves[RANDOM_NUMBER])
     {
-      String move = legalMoves[randomNumber];
-      int axis = getAxisIndex(move);
-      int axisDirection = getAxisDirection(move);
-      head[axis] += axisDirection;
+      const String MOVE = legalMoves[RANDOM_NUMBER];
+      const int AXIS = getAxisIndex(MOVE);
+      const int AXIS_DIRECTION = getAxisDirection(MOVE);
+      head[AXIS] += AXIS_DIRECTION;
       if (travelThroughWallsOn)
       {
-        if (head[axis] < cubeAxisLowerBound)
+        if (head[AXIS] < CUBE_AXIS_LOWER_BOUND)
         {
-          head[axis] = cubeAxisUpperBound;
+          head[AXIS] = CUBE_AXIS_UPPER_BOUND;
         }
-        else if (head[axis] > cubeAxisUpperBound)
+        else if (head[AXIS] > CUBE_AXIS_UPPER_BOUND)
         {
-          head[axis] = cubeAxisLowerBound;
+          head[AXIS] = CUBE_AXIS_LOWER_BOUND;
         }
       }
       validMoveFound = true;
@@ -310,15 +309,15 @@ void Snake::movePelletToRandomUnpopulatedLED()
   while (!validPelletPositionFound)
   {
     // Generates random numbers between 0-(cubesize-1)
-    int randomXCoordinate = random(0, cubeSize);
-    int randomYCoordinate = random(0, cubeSize);
-    int randomZCoordinate = random(0, cubeSize);
-    int position[] = {randomXCoordinate, randomYCoordinate, randomZCoordinate};
+    const int RANDOM_X_COORDINATE = random(0, CUBE_SIZE);
+    const int RANDOM_Y_COORDINATE = random(0, CUBE_SIZE);
+    const int RANDOM_Z_COORDINATE = random(0, CUBE_SIZE);
+    int position[] = {RANDOM_X_COORDINATE, RANDOM_Y_COORDINATE, RANDOM_Z_COORDINATE};
     // If the random position is a part of the snake, generate new number. Else set pellet to random position and exit loop.
-    if (!matrixContains(tail, dimensions, position))
+    if (!matrixContains(tail, DIMENSIONS, position))
     {
       validPelletPositionFound = true;
-      for (int i = 0; i < dimensions; i++)
+      for (int i = 0; i < DIMENSIONS; i++)
       {
         pellet[i] = position[i];
       }
@@ -326,10 +325,10 @@ void Snake::movePelletToRandomUnpopulatedLED()
   }
 }
 
-int Snake::getAxisIndex(String move)
+int Snake::getAxisIndex(const String MOVE)
 {
-  char axis = getAxis(move);
-  switch (axis)
+  const char AXIS = getAxis(MOVE);
+  switch (AXIS)
   {
   case 'x':
     return 0;
@@ -341,17 +340,17 @@ int Snake::getAxisIndex(String move)
   return -1;
 }
 
-char Snake::getAxis(String move)
+char Snake::getAxis(const String MOVE)
 {
-  if (move.equals("RIGHT") || move.equals("LEFT"))
+  if (MOVE.equals("RIGHT") || MOVE.equals("LEFT"))
   {
     return 'x';
   }
-  else if (move.equals("UP") || move.equals("DOWN"))
+  else if (MOVE.equals("UP") || MOVE.equals("DOWN"))
   {
     return 'y';
   }
-  else if (move.equals("FORWARDS") || move.equals("BACKWARDS"))
+  else if (MOVE.equals("FORWARDS") || MOVE.equals("BACKWARDS"))
   {
     return 'z';
   }
@@ -361,41 +360,39 @@ char Snake::getAxis(String move)
   }
 }
 
-int Snake::getAxisDirection(String move)
+int Snake::getAxisDirection(const String MOVE)
 {
-  return isIncrementMove(move) ? 1 : -1;
+  return isIncrementMove(MOVE) ? 1 : -1;
 }
 
-bool Snake::isIncrementMove(String move)
+bool Snake::isIncrementMove(const String MOVE)
 {
-  return move.equals("UP") || move.equals("RIGHT") || move.equals("FORWARDS");
+  return MOVE.equals("UP") || MOVE.equals("RIGHT") || MOVE.equals("FORWARDS");
 }
 
 // Sets any coordinates within positions to the supplied onColour, other coordinates are set to the supplied offColour
-void Snake::setCubeToPositionsColours(int positions[][3], int noOfPositions, int positionsColours[][3], String offColour)
+void Snake::setCubeToPositionsColours(int positions[][3], const int NUMBER_OF_POSITIONS, int positionsColours[][3], const String OFF_COLOUR)
 {
   int index = 0;
-  int coloursQueue[27][3];
   int positionsLit = 0;
-  for (int x = 0; x < cubeSize; x++)
+  for (int x = 0; x < CUBE_SIZE; x++)
   {
-    for (int y = 0; y < cubeSize; y++)
+    for (int y = 0; y < CUBE_SIZE; y++)
     {
-      for (int z = 0; z < cubeSize; z++)
+      for (int z = 0; z < CUBE_SIZE; z++)
       {
         bool setOnColour = false;
         // This checks if we have already lit up all the positions, if we have then there's no need to waste time checking if the current coordinate matches a position
-        if (positionsLit < noOfPositions)
+        if (positionsLit < NUMBER_OF_POSITIONS)
         {
-          for (int i = 0; i < noOfPositions; i++)
+          for (int i = 0; i < NUMBER_OF_POSITIONS; i++)
           {
             // If the current position matches the current coordinate (we use the cube mapping var here to map coordinates to where they should be within the LED cube), then light up with the onColour.
-            if (arrayEquals(cubeMapping[x][y][z], 3, positions[i], 3))
+            if (arrayEquals(CUBE_MAPPINGS[x][y][z], 3, positions[i], 3))
             {
-              for (int j = 0; j < dimensions; j++)
-              {
-                coloursQueue[index][j] = positionsColours[i][j];
-              }
+              LEDS[index].red = positionsColours[i][0];
+              LEDS[index].green = positionsColours[i][1];
+              LEDS[index].blue = positionsColours[i][2];
               setOnColour = true;
               positionsLit++;
               break;
@@ -404,34 +401,26 @@ void Snake::setCubeToPositionsColours(int positions[][3], int noOfPositions, int
         }
         if (!setOnColour)
         {
-          int colourIndex = findIndexOfString(offColour, colours, sizeof(colours));
-          for (int j = 0; j < dimensions; j++)
-          {
-            coloursQueue[index][j] = rgbColourValues[colourIndex][j];
-          }
+          const int COLOUR_INDEX = findIndexOfString(OFF_COLOUR, COLOURS, sizeof(COLOURS));
+          LEDS[index].red = RGB_COLOUR_VALUES[COLOUR_INDEX][0];
+          LEDS[index].green = RGB_COLOUR_VALUES[COLOUR_INDEX][1];
+          LEDS[index].blue = RGB_COLOUR_VALUES[COLOUR_INDEX][2];
         }
         index++;
       }
     }
   }
-
-  for (int i = 0; i < 27; i++)
-  {
-    leds[i].red = coloursQueue[i][0];
-    leds[i].green = coloursQueue[i][1];
-    leds[i].blue = coloursQueue[i][2];
-  }
   FastLED.show();
 }
 
 // Returns true if arr1 has equal values to arr2, else false
-bool Snake::arrayEquals(const int arr1[], int arr1Size, const int arr2[], int arr2Size)
+bool Snake::arrayEquals(const int arr1[], const int ARR_1_SIZE, const int arr2[], const int ARR_2_SIZE)
 {
-  if (arr1Size != arr2Size)
+  if (ARR_1_SIZE != ARR_2_SIZE)
   {
     return false;
   }
-  for (int i = 0; i < arr1Size; i++)
+  for (int i = 0; i < ARR_1_SIZE; i++)
   {
     if (arr1[i] != arr2[i])
     {
@@ -442,11 +431,11 @@ bool Snake::arrayEquals(const int arr1[], int arr1Size, const int arr2[], int ar
 }
 
 // Returns true if the matrix contains the supplied arr, else false
-bool Snake::matrixContains(int matrix[][dimensions], int matrixSize, int arr[dimensions])
+bool Snake::matrixContains(int matrix[][DIMENSIONS], const int MATRIX_SIZE, int arr[DIMENSIONS])
 {
-  for (int i = 0; i < matrixSize; i++)
+  for (int i = 0; i < MATRIX_SIZE; i++)
   {
-    if (arrayEquals(matrix[i], dimensions, arr, dimensions))
+    if (arrayEquals(matrix[i], DIMENSIONS, arr, DIMENSIONS))
     {
       return true;
     }
@@ -454,11 +443,11 @@ bool Snake::matrixContains(int matrix[][dimensions], int matrixSize, int arr[dim
   return false;
 }
 
-int Snake::findIndexOfString(String string, const String arr[], int arrSize)
+int Snake::findIndexOfString(const String STRING, const String arr[], const int ARR_SIZE)
 {
-  for (int i = 0; i < arrSize; i++)
+  for (int i = 0; i < ARR_SIZE; i++)
   {
-    if (arr[i].equals(string))
+    if (arr[i].equals(STRING))
     {
       return i;
     }

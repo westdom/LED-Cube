@@ -2,36 +2,37 @@
 #include "Pattern.h"
 #include "Snake.h"
 
-const int potentiometerPin = A1;
-const int buttonPin = 2;
+const int POTENTIOMETER_PIN = A1;
+const int BUTTON_PIN = 2;
 const unsigned int MAX_RUNTIME_DURATION_IN_MINUTES = 60;
 
-unsigned long last_cube_interaction_start_time = millis();
+unsigned long lastCubeInteractionStartTime = millis();
 
 Pattern *pattern;
 
 void setup()
 {
-  pinMode(buttonPin, INPUT);
+  Serial.begin(9600);
+  pinMode(BUTTON_PIN, INPUT);
   updateSelectedPattern();
 }
 
 void loop()
 {
-  static unsigned long current_time = millis();
-  static unsigned long pattern_update_start_time = current_time;
+  static unsigned long currentTime = millis();
+  static unsigned long lastPatternUpdateStartTime = currentTime;
 
   checkIfButtonPressed();
   unsigned int delay = checkPotentiometerReading();
   // Checks if enough time has passed to update the pattern again. Using an if like this rather than the "delay()" function is essential as delay() is what's known as a "blocking" delay.
-  if (current_time - pattern_update_start_time >= delay)
+  if (currentTime - lastPatternUpdateStartTime >= delay)
   {
-    pattern_update_start_time = current_time;
+    lastPatternUpdateStartTime = currentTime;
     pattern->update();
   }
 
   // Checks if the cube has not been turned on/interacted with recently. If it has not, then the board enters "sleep mode" and must be reset to reactivate.
-  if (current_time - last_cube_interaction_start_time >= MAX_RUNTIME_DURATION_IN_MINUTES * 1000 * 60)
+  if (currentTime - lastCubeInteractionStartTime >= MAX_RUNTIME_DURATION_IN_MINUTES * 1000 * 60)
   {
     sleep_enable();
     set_sleep_mode(SLEEP_MODE_PWR_DOWN);
@@ -73,12 +74,12 @@ void updateSelectedPattern()
 
 unsigned int checkPotentiometerReading()
 {
-  static unsigned int lastPotentiometerReading = analogRead(potentiometerPin);
+  static unsigned int lastPotentiometerReading = analogRead(POTENTIOMETER_PIN);
 
-  unsigned int potontiometerReading = analogRead(potentiometerPin);
+  unsigned int potontiometerReading = analogRead(POTENTIOMETER_PIN);
   if (potontiometerReading != lastPotentiometerReading)
   {
-    last_cube_interaction_start_time = millis();
+    lastCubeInteractionStartTime = millis();
   }
   lastPotentiometerReading = potontiometerReading;
   return potontiometerReading;
@@ -91,7 +92,7 @@ void checkIfButtonPressed()
   static int lastButtonState = LOW;
   static int buttonState = 0;
 
-  int reading = digitalRead(buttonPin);
+  int reading = digitalRead(BUTTON_PIN);
   if (reading != lastButtonState)
   {
     lastDebounceTime = millis();
@@ -104,7 +105,7 @@ void checkIfButtonPressed()
       buttonState = reading;
       if (buttonState == HIGH)
       {
-        last_cube_interaction_start_time = millis();
+        lastCubeInteractionStartTime = millis();
         updateSelectedPattern();
       }
     }
