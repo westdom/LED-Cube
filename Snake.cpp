@@ -4,7 +4,7 @@
 #define DELAY 20  // the pulse width in microseconds (plus the 2 microseconds or so that the digitalWrite command takes)
 
 // Constants
-const static int b = 255;
+const static int MAX_BRIGHTNESS = 50;
 const static int dimensions = 3;
 const static int cubeSize = 3;
 const static int snakeLength = 3;
@@ -20,8 +20,8 @@ const static int cubeMapping[cubeSize][cubeSize][cubeSize][dimensions] = {
     {{{0, 0, 2}, {1, 0, 2}, {2, 0, 2}},
      {{2, 1, 2}, {1, 1, 2}, {0, 1, 2}},
      {{0, 2, 2}, {1, 2, 2}, {2, 2, 2}}}};
-const String colours[16] = {"BLACK", "WHITE", "RED", "LIME", "BLUE", "YELLOW", "CYAN", "MAGENTA", "SILVER", "GRAY", "MAROON", "OLIVE", "GREEN", "PURPLE", "TEAL", "NAVY"};
-const int rgbColourValues[16][3] = {{0, 0, 0}, {b, b, b}, {b, 0, 0}, {0, b, 0}, {0, 0, b}, {b, b, 0}, {0, b, b}, {b, 0, b}, {192, 192, 192}, {128, 128, 128}, {128, 0, 0}, {128, 128, 0}, {0, 128, 0}, {128, 0, 128}, {0, 128, 128}, {0, 0, 128}};
+const String colours[8] = {"BLACK", "WHITE", "RED", "LIME", "BLUE", "YELLOW", "CYAN", "MAGENTA"};
+const int rgbColourValues[8][3] = {{0, 0, 0}, {MAX_BRIGHTNESS, MAX_BRIGHTNESS, MAX_BRIGHTNESS}, {MAX_BRIGHTNESS, 0, 0}, {0, MAX_BRIGHTNESS, 0}, {0, 0, MAX_BRIGHTNESS}, {MAX_BRIGHTNESS, MAX_BRIGHTNESS, 0}, {0, MAX_BRIGHTNESS, MAX_BRIGHTNESS}, {MAX_BRIGHTNESS, 0, MAX_BRIGHTNESS}};
 const static int sizeOfLegalMoves = 6;
 String legalMoves[sizeOfLegalMoves] = {"LEFT", "RIGHT", "DOWN", "UP", "BACKWARDS", "FORWARDS"};
 
