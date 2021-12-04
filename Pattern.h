@@ -58,9 +58,8 @@ public:
         return -1;
     }
 
-    void shiftColour(int rgbColour[])
+    void shiftColour(int rgbColour[], const int MAX_BRIGHTNESS)
     {
-        static unsigned int rgbColour[3];
         static int decColour = 0;
         static int incColour = 2;
         static int colourIndex = 0;

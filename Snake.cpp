@@ -70,7 +70,7 @@ void Snake::update()
   setPositionsMatrix();
   if (rainbowSnake)
   {
-    shiftColour(ledOnColours[0]);
+    shiftColour(ledOnColours[0], MAX_BRIGHTNESS);
     for (int i = 1; i < SNAKE_LENGTH; i++)
     {
       for (int j = 0; j < 3; j++)

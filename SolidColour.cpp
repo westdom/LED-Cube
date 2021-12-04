@@ -45,7 +45,7 @@ void SolidColour::update()
 {
     if (rainbowCube)
     {
-        shiftColour(rgbColour);
+        shiftColour(rgbColour, MAX_BRIGHTNESS);
     }
     for (int i = 0; i < 27; i++)
     {
