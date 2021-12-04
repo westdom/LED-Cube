@@ -1,9 +1,7 @@
 #include "Snake.h"
 
-#define LED_PIN 3 // the data pin from the Arduino to your string of LEDs
-#define DELAY 20  // the pulse width in microseconds (plus the 2 microseconds or so that the digitalWrite command takes)
-
 // Constants
+const int LED_PIN = 3;
 const static int MAX_BRIGHTNESS = 50;
 const static int DIMENSIONS = 3;
 const static int CUBE_SIZE = 3;

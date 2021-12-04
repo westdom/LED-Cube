@@ -1,6 +1,7 @@
 #include <avr/sleep.h>
 #include "Pattern.h"
 #include "Snake.h"
+#include "SolidColour.h"
 
 const int POTENTIOMETER_PIN = A1;
 const int BUTTON_PIN = 2;
@@ -54,13 +55,13 @@ void updateSelectedPattern()
   switch (selectedPattern)
   {
   case 0:
-    pattern = new Snake("Green Snake", "GREEN", "MAGENTA", true, false);
+    pattern = new SolidColour("Red Cube", "RED");
     break;
   case 1:
-    pattern = new Snake("Yellow Snake", "YELLOW", "MAGENTA", true, false);
+    pattern = new SolidColour("Rainbow Cube");
     break;
   case 2:
-    pattern = new Snake("Red Snake", "RED", "MAGENTA", true, false);
+    pattern = new Snake("Green Snake", "GREEN", "MAGENTA", true, false);
     break;
   case 3:
     pattern = new Snake("Rainbow Snake", true, false);

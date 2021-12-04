@@ -23,24 +23,24 @@ public:
   virtual String getName();
 
 private:
-  void setup();
-  void setPositionsMatrix();
-  void moveSnakeTail();
-  void moveSnakeHeadAndPellet();
-  void shiftColours();
-  void setPossibleMoves(bool moves[], String legalMoves[], int legalMovesSize);
-  bool canMove(String move);
-  bool moveHeadToPill(bool validMoves[], String legalMoves[], int legalMovesSize);
-  void moveHeadInRandomValidDir(bool validMoves[], String legalMoves[]);
-  void movePelletToRandomUnpopulatedLED();
-  int getAxisIndex(String move);
-  char getAxis(String move);
-  int getAxisDirection(String move);
-  bool isIncrementMove(String move);
-  void setCubeToPositionsColours(int positions[][3], int noOfPositions, int positionsColours[][3], String offColour);
-  bool arrayEquals(const int arr1[], int arr1Size, const int arr2[], int arr2Size);
-  bool matrixContains(int matrix[][3], int matrixSize, int arr[3]);
-  int findIndexOfString(String string, const String arr[], int arrSize);
+  virtual void setup();
+  virtual void setPositionsMatrix();
+  virtual void moveSnakeTail();
+  virtual void moveSnakeHeadAndPellet();
+  virtual void shiftColours();
+  virtual void setPossibleMoves(bool moves[], String legalMoves[], int legalMovesSize);
+  virtual bool canMove(String move);
+  virtual bool moveHeadToPill(bool validMoves[], String legalMoves[], int legalMovesSize);
+  virtual void moveHeadInRandomValidDir(bool validMoves[], String legalMoves[]);
+  virtual void movePelletToRandomUnpopulatedLED();
+  virtual int getAxisIndex(String move);
+  virtual char getAxis(String move);
+  virtual int getAxisDirection(String move);
+  virtual bool isIncrementMove(String move);
+  virtual void setCubeToPositionsColours(int positions[][3], int noOfPositions, int positionsColours[][3], String offColour);
+  virtual bool arrayEquals(const int arr1[], int arr1Size, const int arr2[], int arr2Size);
+  virtual bool matrixContains(int matrix[][3], int matrixSize, int arr[3]);
+  virtual int findIndexOfString(String string, const String arr[], int arrSize);
 };
 
 #endif
