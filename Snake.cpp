@@ -84,7 +84,7 @@ String Snake::getName()
 void Snake::setup()
 {
   // put your setup code here, to run once:
-  FastLED.addLeds<NEOPIXEL, LED_PIN>(LEDS, 27);
+  FastLED.addLeds<NEOPIXEL, LED_PIN>(leds, 27);
   randomSeed(analogRead(0));
   for (int x = 0; x < 4; x++)
   {
@@ -390,9 +390,9 @@ void Snake::setCubeToPositionsColours(int positions[][3], const int NUMBER_OF_PO
             // If the current position matches the current coordinate (we use the cube mapping var here to map coordinates to where they should be within the LED cube), then light up with the onColour.
             if (arrayEquals(CUBE_MAPPINGS[x][y][z], 3, positions[i], 3))
             {
-              LEDS[index].red = positionsColours[i][0];
-              LEDS[index].green = positionsColours[i][1];
-              LEDS[index].blue = positionsColours[i][2];
+              leds[index].red = positionsColours[i][0];
+              leds[index].green = positionsColours[i][1];
+              leds[index].blue = positionsColours[i][2];
               setOnColour = true;
               positionsLit++;
               break;
@@ -402,9 +402,9 @@ void Snake::setCubeToPositionsColours(int positions[][3], const int NUMBER_OF_PO
         if (!setOnColour)
         {
           const int COLOUR_INDEX = findIndexOfString(OFF_COLOUR, COLOURS, sizeof(COLOURS));
-          LEDS[index].red = RGB_COLOUR_VALUES[COLOUR_INDEX][0];
-          LEDS[index].green = RGB_COLOUR_VALUES[COLOUR_INDEX][1];
-          LEDS[index].blue = RGB_COLOUR_VALUES[COLOUR_INDEX][2];
+          leds[index].red = RGB_COLOUR_VALUES[COLOUR_INDEX][0];
+          leds[index].green = RGB_COLOUR_VALUES[COLOUR_INDEX][1];
+          leds[index].blue = RGB_COLOUR_VALUES[COLOUR_INDEX][2];
         }
         index++;
       }
