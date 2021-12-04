@@ -1,15 +1,12 @@
+#include <avr/sleep.h>
 #include "Pattern.h"
 #include "Snake.h"
 
 const int potentiometerPin = A1;
 const int buttonPin = 2;
+const unsigned int MAX_RUNTIME_DURATION_IN_MINUTES = 60;
 
-unsigned long start_time;
-unsigned long current_time;
-unsigned long lastDebounceTime = 0; // the last time the buttons pin was toggled.
-unsigned long debounceDelay = 100;  // the debounce time; increase/decrease accordingly if button presses seem dodgey.
-int lastButtonState = LOW;
-int buttonState = 0;
+unsigned long last_cube_interaction_start_time = millis();
 
 Pattern *pattern;
 
@@ -17,41 +14,28 @@ void setup()
 {
   pinMode(buttonPin, INPUT);
   updateSelectedPattern();
-  current_time = millis();
-  start_time = current_time;
 }
 
 void loop()
 {
-  current_time = millis();
+  static unsigned long current_time = millis();
+  static unsigned long pattern_update_start_time = current_time;
+
   checkIfButtonPressed();
-  unsigned int delay = analogRead(potentiometerPin);
-  // Checks if enough time has passed to update the pattern again. Using an if like this rather than the "delay()" function is essential as this method is what's known as a "non-blocking" delay.
-  if (current_time - start_time >= delay)
+  unsigned int delay = checkPotentiometerReading();
+  // Checks if enough time has passed to update the pattern again. Using an if like this rather than the "delay()" function is essential as delay() is what's known as a "blocking" delay.
+  if (current_time - pattern_update_start_time >= delay)
   {
-    start_time = current_time;
+    pattern_update_start_time = current_time;
     pattern->update();
   }
-}
 
-void checkIfButtonPressed()
-{
-  int reading = digitalRead(buttonPin);
-  if (reading != lastButtonState)
+  // Checks if the cube has not been turned on/interacted with recently. If it has not, then the board enters "sleep mode" and must be reset to reactivate.
+  if (current_time - last_cube_interaction_start_time >= MAX_RUNTIME_DURATION_IN_MINUTES * 1000 * 60)
   {
-    lastDebounceTime = millis();
-  }
-  // Debouncing should mean button presses are more accurate in changing the selected pattern.
-  if ((millis() - lastDebounceTime) > debounceDelay)
-  {
-    if (reading != buttonState)
-    {
-      buttonState = reading;
-      if (buttonState == HIGH)
-      {
-        updateSelectedPattern();
-      }
-    }
+    sleep_enable();
+    set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+    sleep_cpu();
   }
 }
 
@@ -65,7 +49,7 @@ void updateSelectedPattern()
   {
     delete pattern;
   }
-  
+
   switch (selectedPattern)
   {
   case 0:
@@ -84,5 +68,45 @@ void updateSelectedPattern()
     selectedPattern = -1;
     updateSelectedPattern();
     break;
+  }
+}
+
+unsigned int checkPotentiometerReading()
+{
+  static unsigned int lastPotentiometerReading = analogRead(potentiometerPin);
+
+  unsigned int potontiometerReading = analogRead(potentiometerPin);
+  if (potontiometerReading != lastPotentiometerReading)
+  {
+    last_cube_interaction_start_time = millis();
+  }
+  lastPotentiometerReading = potontiometerReading;
+  return potontiometerReading;
+}
+
+void checkIfButtonPressed()
+{
+  static unsigned long lastDebounceTime = 0; // the last time the buttons pin was toggled.
+  static unsigned long debounceDelay = 100;  // the debounce time; increase/decrease accordingly if button presses seem dodgey.
+  static int lastButtonState = LOW;
+  static int buttonState = 0;
+
+  int reading = digitalRead(buttonPin);
+  if (reading != lastButtonState)
+  {
+    lastDebounceTime = millis();
+  }
+  // Debouncing should mean button presses are more accurate in changing the selected pattern.
+  if ((millis() - lastDebounceTime) > debounceDelay)
+  {
+    if (reading != buttonState)
+    {
+      buttonState = reading;
+      if (buttonState == HIGH)
+      {
+        last_cube_interaction_start_time = millis();
+        updateSelectedPattern();
+      }
+    }
   }
 }
