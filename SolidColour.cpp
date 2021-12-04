@@ -45,7 +45,7 @@ void SolidColour::update()
 {
     if (rainbowCube)
     {
-        shiftColour();
+        shiftColour(rgbColour);
     }
     for (int i = 0; i < 27; i++)
     {
@@ -54,51 +54,4 @@ void SolidColour::update()
         leds[i].blue = rgbColour[2];
     }
     FastLED.show();
-}
-
-void SolidColour::shiftColour()
-{
-    static unsigned int rgbColour[3];
-    static int decColour = 0;
-    static int incColour = 2;
-    static int colourIndex = 0;
-
-    if (colourIndex == 0)
-    {
-        // Reset rgbColours
-        rgbColour[0] = 0;
-        rgbColour[1] = 0;
-        rgbColour[2] = 0;
-    }
-
-    colourIndex++;
-    if (colourIndex == MAX_BRIGHTNESS)
-    {
-        colourIndex = 0;
-
-        // Shift dec & inc colours to next rgb byte
-        decColour++;
-        incColour--;
-        if (decColour > 2 || incColour < 0)
-        {
-            decColour = 0;
-            incColour = 2;
-        }
-    }
-    // Increment/decrement respective bytes of rgbColour
-    const static int INCREMENT_BY = 10;
-    rgbColour[decColour] -= INCREMENT_BY;
-    rgbColour[incColour] += INCREMENT_BY;
-}
-
-int SolidColour::findIndexOfString(const String STRING, const String arr[], const int ARR_SIZE)
-{
-    for (int i = 0; i < ARR_SIZE; i++)
-    {
-        if (arr[i].equals(STRING))
-        {
-            return i;
-        }
-    }
-    return -1;
 }

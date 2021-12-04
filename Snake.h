@@ -27,7 +27,6 @@ private:
   virtual void setPositionsMatrix();
   virtual void moveSnakeTail();
   virtual void moveSnakeHeadAndPellet();
-  virtual void shiftColours();
   virtual void setPossibleMoves(bool moves[], String legalMoves[], int legalMovesSize);
   virtual bool canMove(String move);
   virtual bool moveHeadToPill(bool validMoves[], String legalMoves[], int legalMovesSize);
@@ -38,9 +37,6 @@ private:
   virtual int getAxisDirection(String move);
   virtual bool isIncrementMove(String move);
   virtual void setCubeToPositionsColours(int positions[][3], int noOfPositions, int positionsColours[][3], String offColour);
-  virtual bool arrayEquals(const int arr1[], int arr1Size, const int arr2[], int arr2Size);
-  virtual bool matrixContains(int matrix[][3], int matrixSize, int arr[3]);
-  virtual int findIndexOfString(String string, const String arr[], int arrSize);
 };
 
 #endif

@@ -70,7 +70,14 @@ void Snake::update()
   setPositionsMatrix();
   if (rainbowSnake)
   {
-    shiftColours();
+    shiftColour(ledOnColours[0]);
+    for (int i = 1; i < SNAKE_LENGTH; i++)
+    {
+      for (int j = 0; j < 3; j++)
+      {
+        ledOnColours[i][j] = ledOnColours[0][j];
+      }
+    }
   }
 }
 
@@ -152,49 +159,6 @@ void Snake::moveSnakeHeadAndPellet()
   else
   {
     moveHeadInRandomValidDir(moves, LEGAL_MOVES);
-  }
-}
-
-void Snake::shiftColours()
-{
-  static unsigned int rgbColour[3];
-  static int decColour = 0;
-  static int incColour = 2;
-  static int colourIndex = 0;
-
-  if (colourIndex == 0)
-  {
-    // Reset rgbColours
-    rgbColour[0] = ledOnColours[0][0];
-    rgbColour[1] = ledOnColours[0][1];
-    rgbColour[2] = ledOnColours[0][2];
-  }
-
-  colourIndex++;
-  if (colourIndex == MAX_BRIGHTNESS)
-  {
-    colourIndex = 0;
-
-    // Shift dec & inc colours to next rgb byte
-    decColour++;
-    incColour--;
-    if (decColour > 2 || incColour < 0)
-    {
-      decColour = 0;
-      incColour = 2;
-    }
-  }
-  // Increment/decrement respective bytes of rgbColour
-  const static int INCREMENT_BY = 10;
-  rgbColour[decColour] -= INCREMENT_BY;
-  rgbColour[incColour] += INCREMENT_BY;
-
-  // Copy new rgbcolour to the snakes colours
-  for (int i = 0; i < SNAKE_LENGTH; i++)
-  {
-    ledOnColours[0][i] = rgbColour[i];
-    ledOnColours[1][i] = rgbColour[i];
-    ledOnColours[2][i] = rgbColour[i];
   }
 }
 
@@ -409,46 +373,4 @@ void Snake::setCubeToPositionsColours(int positions[][3], const int NUMBER_OF_PO
     }
   }
   FastLED.show();
-}
-
-// Returns true if arr1 has equal values to arr2, else false
-bool Snake::arrayEquals(const int arr1[], const int ARR_1_SIZE, const int arr2[], const int ARR_2_SIZE)
-{
-  if (ARR_1_SIZE != ARR_2_SIZE)
-  {
-    return false;
-  }
-  for (int i = 0; i < ARR_1_SIZE; i++)
-  {
-    if (arr1[i] != arr2[i])
-    {
-      return false;
-    }
-  }
-  return true;
-}
-
-// Returns true if the matrix contains the supplied arr, else false
-bool Snake::matrixContains(int matrix[][DIMENSIONS], const int MATRIX_SIZE, int arr[DIMENSIONS])
-{
-  for (int i = 0; i < MATRIX_SIZE; i++)
-  {
-    if (arrayEquals(matrix[i], DIMENSIONS, arr, DIMENSIONS))
-    {
-      return true;
-    }
-  }
-  return false;
-}
-
-int Snake::findIndexOfString(const String STRING, const String arr[], const int ARR_SIZE)
-{
-  for (int i = 0; i < ARR_SIZE; i++)
-  {
-    if (arr[i].equals(STRING))
-    {
-      return i;
-    }
-  }
-  return -1;
 }

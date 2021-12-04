@@ -21,8 +21,6 @@ public:
 
 private:
     virtual void setup();
-    virtual void shiftColour();
-    virtual int findIndexOfString(String string, const String arr[], int arrSize);
 };
 
 #endif
