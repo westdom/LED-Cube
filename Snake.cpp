@@ -19,7 +19,7 @@ const static int CUBE_MAPPINGS[CUBE_SIZE][CUBE_SIZE][CUBE_SIZE][DIMENSIONS] = {
      {{2, 1, 2}, {1, 1, 2}, {0, 1, 2}},
      {{0, 2, 2}, {1, 2, 2}, {2, 2, 2}}}};
 const String COLOURS[8] = {"BLACK", "WHITE", "RED", "LIME", "BLUE", "YELLOW", "CYAN", "MAGENTA"};
-const int RGB_COLOUR_VALUES[8][3] = {{0, 0, 0}, {MAX_BRIGHTNESS, MAX_BRIGHTNESS, MAX_BRIGHTNESS}, {MAX_BRIGHTNESS, 0, 0}, {0, MAX_BRIGHTNESS, 0}, {0, 0, MAX_BRIGHTNESS}, {MAX_BRIGHTNESS, MAX_BRIGHTNESS, 0}, {0, MAX_BRIGHTNESS, MAX_BRIGHTNESS}, {MAX_BRIGHTNESS, 0, MAX_BRIGHTNESS}};
+int RGB_COLOUR_VALUES[8][3] = {{0, 0, 0}, {MAX_BRIGHTNESS, MAX_BRIGHTNESS, MAX_BRIGHTNESS}, {MAX_BRIGHTNESS, 0, 0}, {0, MAX_BRIGHTNESS, 0}, {0, 0, MAX_BRIGHTNESS}, {MAX_BRIGHTNESS, MAX_BRIGHTNESS, 0}, {0, MAX_BRIGHTNESS, MAX_BRIGHTNESS}, {MAX_BRIGHTNESS, 0, MAX_BRIGHTNESS}};
 const static int SIZE_OF_LEGAL_MOVES = 6;
 String LEGAL_MOVES[SIZE_OF_LEGAL_MOVES] = {"LEFT", "RIGHT", "DOWN", "UP", "BACKWARDS", "FORWARDS"};
 
@@ -352,9 +352,7 @@ void Snake::setCubeToPositionsColours(int positions[][3], const int NUMBER_OF_PO
             // If the current position matches the current coordinate (we use the cube mapping var here to map coordinates to where they should be within the LED cube), then light up with the onColour.
             if (arrayEquals(CUBE_MAPPINGS[x][y][z], 3, positions[i], 3))
             {
-              leds[index].red = positionsColours[i][0];
-              leds[index].green = positionsColours[i][1];
-              leds[index].blue = positionsColours[i][2];
+              sendColour(leds, index, positionsColours[i]);
               setOnColour = true;
               positionsLit++;
               break;
@@ -364,9 +362,7 @@ void Snake::setCubeToPositionsColours(int positions[][3], const int NUMBER_OF_PO
         if (!setOnColour)
         {
           const int COLOUR_INDEX = findIndexOfString(OFF_COLOUR, COLOURS, sizeof(COLOURS));
-          leds[index].red = RGB_COLOUR_VALUES[COLOUR_INDEX][0];
-          leds[index].green = RGB_COLOUR_VALUES[COLOUR_INDEX][1];
-          leds[index].blue = RGB_COLOUR_VALUES[COLOUR_INDEX][2];
+          sendColour(leds, index, RGB_COLOUR_VALUES[COLOUR_INDEX]);
         }
         index++;
       }

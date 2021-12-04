@@ -91,6 +91,13 @@ public:
         rgbColour[decColour] -= INCREMENT_BY;
         rgbColour[incColour] += INCREMENT_BY;
     }
+
+    void sendColour(CRGB leds[], const int LED_INDEX, int rgbColour[])
+    {
+        leds[LED_INDEX].red = rgbColour[0];
+        leds[LED_INDEX].green = rgbColour[1];
+        leds[LED_INDEX].blue = rgbColour[2];
+    }
 };
 
 #endif

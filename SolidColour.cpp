@@ -49,9 +49,7 @@ void SolidColour::update()
     }
     for (int i = 0; i < 27; i++)
     {
-        leds[i].red = rgbColour[0];
-        leds[i].green = rgbColour[1];
-        leds[i].blue = rgbColour[2];
+        sendColour(leds, i, rgbColour);
     }
     FastLED.show();
 }
