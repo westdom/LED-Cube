@@ -44,7 +44,7 @@ void loop()
 // Strategy design pattern. When we switch pattern via the button, we discard the previous reference of the pattern object from memory, and asign a new pattern dynamically (aka at run time).
 void updateSelectedPattern()
 {
-  static int selectedPattern = 0;
+  static int selectedPattern = -1;
 
   selectedPattern++;
   if (selectedPattern != 0)

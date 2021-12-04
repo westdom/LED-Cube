@@ -16,7 +16,6 @@ public:
 
     /* GENERIC UTILITY METHODS */
 
-    // Returns true if arr1 has equal values to arr2, else false
     boolean arrayEquals(const int arr1[], const int ARR_1_SIZE, const int arr2[], const int ARR_2_SIZE)
     {
         if (ARR_1_SIZE != ARR_2_SIZE)
@@ -33,7 +32,6 @@ public:
         return true;
     }
 
-    // Returns true if the matrix contains the supplied arr, else false
     boolean matrixContains(int matrix[][3], const int MATRIX_SIZE, int arr[3])
     {
         for (int i = 0; i < MATRIX_SIZE; i++)
@@ -60,6 +58,8 @@ public:
 
     void shiftColour(int rgbColour[], const int MAX_BRIGHTNESS)
     {
+        const int INCREMENT_BY = 10;
+
         static int decColour = 0;
         static int incColour = 2;
         static int colourIndex = 0;
@@ -73,7 +73,7 @@ public:
         }
 
         colourIndex++;
-        if (colourIndex == MAX_BRIGHTNESS)
+        if (colourIndex == (MAX_BRIGHTNESS / INCREMENT_BY))
         {
             colourIndex = 0;
 
@@ -87,7 +87,6 @@ public:
             }
         }
         // Increment/decrement respective bytes of rgbColour
-        const static int INCREMENT_BY = 10;
         rgbColour[decColour] -= INCREMENT_BY;
         rgbColour[incColour] += INCREMENT_BY;
     }

@@ -28,11 +28,9 @@ SolidColour::SolidColour(String name, String colour)
 void SolidColour::setup()
 {
     FastLED.addLeds<NEOPIXEL, LED_PIN>(leds, 27);
+    for (int i = 0; i < 3; i++)
     {
-        for (int i = 0; i < 3; i++)
-        {
-            rgbColour[i] = RGB_COLOUR_VALUES[findIndexOfString(colour, COLOURS, 16)][i];
-        }
+        rgbColour[i] = RGB_COLOUR_VALUES[findIndexOfString(colour, COLOURS, 16)][i];
     }
 }
 
