@@ -5,7 +5,7 @@
 
 const int POTENTIOMETER_PIN = A1;
 const int BUTTON_PIN = 2;
-const unsigned int MAX_RUNTIME_DURATION_IN_MINUTES = 60;
+const unsigned long MAX_RUNTIME_DURATION = 1000L * 60L * 30L;
 
 unsigned long lastCubeInteractionStartTime = millis();
 
@@ -25,7 +25,7 @@ void loop()
 
   currentTime = millis();
   // checkIfButtonPressed();
-  unsigned int delay = 75 * pattern->getDelayMultiplier();
+  unsigned int delay = 100 * pattern->getDelayMultiplier();
   // Checks if enough time has passed to update the pattern again. Using an if like this rather than the "delay()" function is essential as delay() is what's known as a "blocking" delay.
   if (currentTime - lastPatternUpdateStartTime >= delay)
   {
@@ -34,13 +34,15 @@ void loop()
   }
 
   // Checks if the cube has not been turned on/interacted with recently. If it has not, then the board enters "sleep mode" and must be reset to reactivate.
-  // if (currentTime - lastCubeInteractionStartTime >= MAX_RUNTIME_DURATION_IN_MINUTES * 1000 * 60)
-  // {
-  //   Serial.print("SLEEPING");
-  //   sleep_enable();
-  //   set_sleep_mode(SLEEP_MODE_PWR_DOWN);
-  //   sleep_cpu();
-  // }
+  if (currentTime - lastCubeInteractionStartTime >= MAX_RUNTIME_DURATION)
+  {
+    delete pattern;
+    pattern = new SolidColour("Black Cube", 0x000000);
+    pattern->update();
+    sleep_enable();
+    set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+    sleep_cpu();
+  }
 }
 
 // Strategy design pattern. When we switch pattern via the button, we discard the previous reference of the pattern object from memory, and asign a new pattern dynamically (aka at run time).
