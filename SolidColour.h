@@ -8,16 +8,17 @@ class SolidColour : public Pattern
 {
     CRGB leds[27];
     String name;
-    String colour;
+    uint32_t colour;
     boolean rainbowCube;
 
 public:
     // Fixed colour
-    SolidColour(String name, String colour);
+    SolidColour(String name, uint32_t colour);
     // Rainbow colour
     SolidColour(String name);
     virtual void update();
     virtual String getName();
+    virtual int getDelayMultiplier();
 
 private:
     virtual void setup();

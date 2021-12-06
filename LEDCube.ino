@@ -23,8 +23,9 @@ void loop()
   static unsigned long currentTime = millis();
   static unsigned long lastPatternUpdateStartTime = currentTime;
 
-  checkIfButtonPressed();
-  unsigned int delay = checkPotentiometerReading();
+  currentTime = millis();
+  // checkIfButtonPressed();
+  unsigned int delay = 75 * pattern->getDelayMultiplier();
   // Checks if enough time has passed to update the pattern again. Using an if like this rather than the "delay()" function is essential as delay() is what's known as a "blocking" delay.
   if (currentTime - lastPatternUpdateStartTime >= delay)
   {
@@ -33,35 +34,36 @@ void loop()
   }
 
   // Checks if the cube has not been turned on/interacted with recently. If it has not, then the board enters "sleep mode" and must be reset to reactivate.
-  if (currentTime - lastCubeInteractionStartTime >= MAX_RUNTIME_DURATION_IN_MINUTES * 1000 * 60)
-  {
-    sleep_enable();
-    set_sleep_mode(SLEEP_MODE_PWR_DOWN);
-    sleep_cpu();
-  }
+  // if (currentTime - lastCubeInteractionStartTime >= MAX_RUNTIME_DURATION_IN_MINUTES * 1000 * 60)
+  // {
+  //   Serial.print("SLEEPING");
+  //   sleep_enable();
+  //   set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+  //   sleep_cpu();
+  // }
 }
 
 // Strategy design pattern. When we switch pattern via the button, we discard the previous reference of the pattern object from memory, and asign a new pattern dynamically (aka at run time).
 void updateSelectedPattern()
 {
-  static int selectedPattern = -1;
+  static int selectedPattern = 3;
 
-  selectedPattern++;
+  // selectedPattern++;
   if (selectedPattern != 0)
   {
-    delete pattern;
+    // delete pattern;
   }
 
   switch (selectedPattern)
   {
   case 0:
-    pattern = new SolidColour("Red Cube", "RED");
+    pattern = new SolidColour("Red Cube", 0xFF0000);
     break;
   case 1:
     pattern = new SolidColour("Rainbow Cube");
     break;
   case 2:
-    pattern = new Snake("Green Snake", "GREEN", "MAGENTA", true, false);
+    pattern = new Snake("Green Snake", 0x008000, 0xFF00FF, true, false);
     break;
   case 3:
     pattern = new Snake("Rainbow Snake", true, false);

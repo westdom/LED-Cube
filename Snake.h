@@ -8,23 +8,25 @@ class Snake : public Pattern
 {
   CRGB leds[27];
   String name;
-  String snakeColour;
-  String pelletColour;
+  uint32_t snakeColour;
+  uint32_t pelletColour;
   bool pelletOn;
   bool travelThroughWallsOn;
   bool rainbowSnake;
 
 public:
   // Fixed colour snake
-  Snake(String snakeName, String snakeColour, String pelletColour, bool pelletOn, bool travelThroughWallsOn);
+  Snake(String snakeName, uint32_t snakeColour, uint32_t pelletColour, bool pelletOn, bool travelThroughWallsOn);
   // Rainbow snake
   Snake(String snakeName, bool pelletOn, bool travelThroughWallsOn);
   virtual void update();
   virtual String getName();
+  virtual int getDelayMultiplier();
 
 private:
   virtual void setup();
   virtual void setPositionsMatrix();
+  virtual void setPositionsColoursMatrix();
   virtual void moveSnakeTail();
   virtual void moveSnakeHeadAndPellet();
   virtual void setPossibleMoves(bool moves[], String legalMoves[], int legalMovesSize);
@@ -36,7 +38,7 @@ private:
   virtual char getAxis(String move);
   virtual int getAxisDirection(String move);
   virtual bool isIncrementMove(String move);
-  virtual void setCubeToPositionsColours(int positions[][3], int noOfPositions, int positionsColours[][3], String offColour);
+  virtual void setCubeToPositionsColours(int positions[][3], int noOfPositions, uint32_t positionsColours[], long offColour);
 };
 
 #endif
