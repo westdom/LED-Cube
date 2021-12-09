@@ -21,18 +21,11 @@ void setup()
 
 void loop()
 {
-  static unsigned long currentTime = millis();
-  static unsigned long lastPatternUpdateStartTime = currentTime;
+  const unsigned long currentTime = millis();
 
-  currentTime = millis();
   // checkIfButtonPressed();
-  unsigned int delay = 100 * pattern->getDelayMultiplier();
-  // Checks if enough time has passed to update the pattern again. Using an if like this rather than the "delay()" function is essential as delay() is what's known as a "blocking" delay.
-  if (currentTime - lastPatternUpdateStartTime >= delay)
-  {
-    lastPatternUpdateStartTime = currentTime;
-    pattern->update();
-  }
+
+  pattern->update();
 
   // Checks if the cube has not been turned on/interacted with recently. If it has not, then the board enters "sleep mode" and must be reset to reactivate.
   if (currentTime - lastCubeInteractionStartTime >= MAX_RUNTIME_DURATION)
@@ -49,7 +42,7 @@ void loop()
 // Strategy design pattern. When we switch pattern via the button, we discard the previous reference of the pattern object from memory, and asign a new pattern dynamically (aka at run time).
 void updateSelectedPattern()
 {
-  static int selectedPattern = 4;
+  static int selectedPattern = 1;
 
   // selectedPattern++;
   if (selectedPattern != 0)
@@ -60,18 +53,12 @@ void updateSelectedPattern()
   switch (selectedPattern)
   {
   case 0:
-    pattern = new SolidColour("Red Cube", 0xFF0000);
-    break;
-  case 1:
     pattern = new SolidColour("Rainbow Cube");
     break;
-  case 2:
-    pattern = new Snake("Green Snake", 0x008000, 0xFF00FF, true, false);
-    break;
-  case 3:
+  case 1:
     pattern = new Snake("Rainbow Snake", true, false);
     break;
-  case 4:
+  case 2:
     pattern = new RotatingPlaneColourCycle("Rotating Plane Colour Cycle");
     break;
   default:
@@ -79,19 +66,6 @@ void updateSelectedPattern()
     updateSelectedPattern();
     break;
   }
-}
-
-unsigned int checkPotentiometerReading()
-{
-  static unsigned int lastPotentiometerReading = analogRead(POTENTIOMETER_PIN);
-
-  unsigned int potontiometerReading = analogRead(POTENTIOMETER_PIN);
-  if (potontiometerReading != lastPotentiometerReading)
-  {
-    lastCubeInteractionStartTime = millis();
-  }
-  lastPotentiometerReading = potontiometerReading;
-  return potontiometerReading;
 }
 
 void checkIfButtonPressed()

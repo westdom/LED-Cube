@@ -10,6 +10,8 @@ class SolidColour : public Pattern
     String name;
     uint32_t colour;
     boolean rainbowCube;
+    const unsigned int DELAY = 50;
+    unsigned long previousUpdateStartTime = millis();
 
 public:
     // Fixed colour
@@ -19,9 +21,6 @@ public:
     virtual void update();
     virtual String getName();
     virtual int getDelayMultiplier();
-
-private:
-    virtual void setup();
 };
 
 #endif

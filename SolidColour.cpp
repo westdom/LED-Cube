@@ -5,7 +5,8 @@ SolidColour::SolidColour(String name)
     this->name = name;
     this->colour = 0x000000;
     this->rainbowCube = true;
-    setup();
+    FastLED.addLeds<NEOPIXEL, LED_PIN>(leds, 27);
+    FastLED.setBrightness(MAX_BRIGHTNESS);
 }
 
 SolidColour::SolidColour(String name, uint32_t colour)
@@ -13,11 +14,6 @@ SolidColour::SolidColour(String name, uint32_t colour)
     this->name = name;
     this->colour = colour;
     this->rainbowCube = false;
-    setup();
-}
-
-void SolidColour::setup()
-{
     FastLED.addLeds<NEOPIXEL, LED_PIN>(leds, 27);
     FastLED.setBrightness(MAX_BRIGHTNESS);
 }
@@ -29,15 +25,20 @@ String SolidColour::getName()
 
 void SolidColour::update()
 {
-    if (rainbowCube)
+    const unsigned long currentTime = millis();
+    if (currentTime - previousUpdateStartTime >= DELAY)
     {
-        colour = getNextRainbowColour();
+        previousUpdateStartTime = currentTime;
+        if (rainbowCube)
+        {
+            colour = getNextRainbowColour();
+        }
+        for (int i = 0; i < 27; i++)
+        {
+            sendColour(leds, i, colour);
+        }
+        FastLED.show();
     }
-    for (int i = 0; i < 27; i++)
-    {
-        sendColour(leds, i, colour);
-    }
-    FastLED.show();
 }
 
 int SolidColour::getDelayMultiplier()

@@ -54,17 +54,21 @@ Snake::Snake(const String SNAKE_NAME, const bool PELLET_ON, const bool TRAVEL_TH
 
 void Snake::update()
 {
-  // put your main code here, to run repeatedly:
-  const static int BACKGROUND_COLOUR = 0x000000;
-  const static int NUMBER_OF_LEDS_TO_DISPLAY = pelletOn ? SNAKE_LENGTH + 1 : SNAKE_LENGTH;
-  setCubeToPositionsColours(positions, NUMBER_OF_LEDS_TO_DISPLAY, positionsColours, BACKGROUND_COLOUR);
-  moveSnakeHeadAndPellet();
-  moveSnakeTail();
-  setPositionsMatrix();
-  if (rainbowSnake)
+  const unsigned long currentTime = millis();
+  if (currentTime - previousUpdateStartTime >= DELAY)
   {
-    snakeColour = getNextRainbowColour();
-    setPositionsColoursMatrix();
+    previousUpdateStartTime = currentTime;
+    const static int BACKGROUND_COLOUR = 0x000000;
+    const static int NUMBER_OF_LEDS_TO_DISPLAY = pelletOn ? SNAKE_LENGTH + 1 : SNAKE_LENGTH;
+    setCubeToPositionsColours(positions, NUMBER_OF_LEDS_TO_DISPLAY, positionsColours, BACKGROUND_COLOUR);
+    moveSnakeHeadAndPellet();
+    moveSnakeTail();
+    setPositionsMatrix();
+    if (rainbowSnake)
+    {
+      snakeColour = getNextRainbowColour();
+      setPositionsColoursMatrix();
+    }
   }
 }
 

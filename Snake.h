@@ -13,6 +13,8 @@ class Snake : public Pattern
   bool pelletOn;
   bool travelThroughWallsOn;
   bool rainbowSnake;
+  const unsigned int DELAY = 100;
+  unsigned long previousUpdateStartTime = millis();
 
 public:
   // Fixed colour snake
