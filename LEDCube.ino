@@ -32,6 +32,7 @@ void loop()
   {
     delete pattern;
     pattern = new SolidColour("Black Cube", CRGB::Black);
+    delay(1000);
     pattern->update();
     sleep_enable();
     set_sleep_mode(SLEEP_MODE_PWR_DOWN);
