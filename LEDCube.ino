@@ -31,7 +31,7 @@ void loop()
   if (currentTime - lastCubeInteractionStartTime >= MAX_RUNTIME_DURATION)
   {
     delete pattern;
-    pattern = new SolidColour("Black Cube", 0x000000);
+    pattern = new SolidColour("Black Cube", CRGB::Black);
     pattern->update();
     sleep_enable();
     set_sleep_mode(SLEEP_MODE_PWR_DOWN);

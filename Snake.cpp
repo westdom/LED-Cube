@@ -3,16 +3,6 @@
 
 // Constants
 const int SNAKE_LENGTH = 3;
-const int CUBE_MAPPINGS[3][3][3][3] = {
-    {{{2, 0, 0}, {1, 0, 0}, {0, 0, 0}},
-     {{0, 0, 1}, {1, 0, 1}, {2, 0, 1}},
-     {{2, 0, 2}, {1, 0, 2}, {0, 0, 2}}},
-    {{{2, 1, 2}, {1, 1, 2}, {0, 1, 2}},
-     {{0, 1, 1}, {1, 1, 1}, {2, 1, 1}},
-     {{2, 1, 0}, {1, 1, 0}, {0, 1, 0}}},
-    {{{2, 2, 0}, {1, 2, 0}, {0, 2, 0}},
-     {{0, 2, 1}, {1, 2, 1}, {2, 2, 1}},
-     {{2, 2, 2}, {1, 2, 2}, {0, 2, 2}}}};
 const int SIZE_OF_LEGAL_MOVES = 6;
 String LEGAL_MOVES[SIZE_OF_LEGAL_MOVES] = {"LEFT", "RIGHT", "DOWN", "UP", "BACKWARDS", "FORWARDS"};
 
@@ -44,8 +34,8 @@ Snake::Snake(const String SNAKE_NAME, const uint32_t SNAKE_COLOUR, const uint32_
 Snake::Snake(const String SNAKE_NAME, const bool PELLET_ON, const bool TRAVEL_THROUGH_WALLS_ON)
 {
   this->name = SNAKE_NAME;
-  this->snakeColour = 0x000000;
-  this->pelletColour = 0xFF00FF;
+  this->snakeColour = CRGB::Black;
+  this->pelletColour = CRGB::Magenta;
   this->pelletOn = PELLET_ON;
   this->travelThroughWallsOn = TRAVEL_THROUGH_WALLS_ON;
   this->rainbowSnake = true;
@@ -58,9 +48,9 @@ void Snake::update()
   if (currentTime - previousUpdateStartTime >= DELAY)
   {
     previousUpdateStartTime = currentTime;
-    const static int BACKGROUND_COLOUR = 0x000000;
+    const static int BACKGROUND_COLOUR = CRGB::Black;
     const static int NUMBER_OF_LEDS_TO_DISPLAY = pelletOn ? SNAKE_LENGTH + 1 : SNAKE_LENGTH;
-    setCubeToPositionsColours(positions, NUMBER_OF_LEDS_TO_DISPLAY, positionsColours, BACKGROUND_COLOUR);
+    sendPositionsColours(leds, positions, NUMBER_OF_LEDS_TO_DISPLAY, positionsColours, BACKGROUND_COLOUR);
     moveSnakeHeadAndPellet();
     moveSnakeTail();
     setPositionsMatrix();
@@ -75,11 +65,6 @@ void Snake::update()
 String Snake::getName()
 {
   return name;
-}
-
-int Snake::getDelayMultiplier()
-{
-  return 2;
 }
 
 void Snake::setup()
@@ -323,42 +308,4 @@ int Snake::getAxisDirection(const String MOVE)
 bool Snake::isIncrementMove(const String MOVE)
 {
   return MOVE.equals("UP") || MOVE.equals("RIGHT") || MOVE.equals("FORWARDS");
-}
-
-// Sets any coordinates within positions to the supplied onColour, other coordinates are set to the supplied offColour
-void Snake::setCubeToPositionsColours(int positions[][3], const int NUMBER_OF_POSITIONS, uint32_t positionsColours[], const long OFF_COLOUR)
-{
-  int index = 0;
-  int positionsLit = 0;
-  for (int x = 0; x < CUBE_SIZE; x++)
-  {
-    for (int y = 0; y < CUBE_SIZE; y++)
-    {
-      for (int z = 0; z < CUBE_SIZE; z++)
-      {
-        bool setOnColour = false;
-        // This checks if we have already lit up all the positions, if we have then there's no need to waste time checking if the current coordinate matches a position
-        if (positionsLit < NUMBER_OF_POSITIONS)
-        {
-          for (int i = 0; i < NUMBER_OF_POSITIONS; i++)
-          {
-            // If the current position matches the current coordinate (we use the cube mapping var here to map coordinates to where they should be within the LED cube), then light up with the onColour.
-            if (arrayEquals(CUBE_MAPPINGS[x][y][z], 3, positions[i], 3))
-            {
-              sendColour(leds, index, positionsColours[i]);
-              setOnColour = true;
-              positionsLit++;
-              break;
-            }
-          }
-        }
-        if (!setOnColour)
-        {
-          sendColour(leds, index, OFF_COLOUR);
-        }
-        index++;
-      }
-    }
-  }
-  FastLED.show();
 }

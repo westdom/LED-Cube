@@ -19,7 +19,6 @@ public:
     virtual ~Pattern() = default;
     virtual void update();
     virtual String getName();
-    virtual int getDelayMultiplier();
 
     /* GENERIC UTILITY METHODS */
 
@@ -91,9 +90,9 @@ public:
 
     void sendColour(CRGB leds[], const int LED_INDEX, uint32_t hexColour)
     {
-        int red = ((hexColour >> 16L) & 0xFFL);  // Extract the RR byte
-        int green = ((hexColour >> 8L) & 0xFFL); // Extract the GG byte
-        int blue = ((hexColour)&0xFFL);          // Extract the BB byte
+        int red = ((hexColour >> 16) & 0xFF);
+        int green = ((hexColour >> 8) & 0xFF);
+        int blue = ((hexColour)&0xFF);
         // Swapping R and G as FASTLED seems to import hexs as GGRRBB
         uint32_t swappedColour = ((green & 0xFFL) << 16L) + ((red & 0xFFL) << 8L) + (blue & 0xFFL);
         leds[LED_INDEX] = swappedColour;
@@ -102,6 +101,88 @@ public:
     void sendColour(CRGB leds[], const int LED_INDEX, int rgb[])
     {
         leds[LED_INDEX].setRGB(rgb[0], rgb[1], rgb[2]);
+    }
+
+    void sendColours(CRGB leds[], uint32_t positionsColours[3][3][3])
+    {
+        static const int CUBE_MAPPINGS[3][3][3][3] = {
+            {{{2, 0, 0}, {1, 0, 0}, {0, 0, 0}},
+             {{0, 0, 1}, {1, 0, 1}, {2, 0, 1}},
+             {{2, 0, 2}, {1, 0, 2}, {0, 0, 2}}},
+            {{{2, 1, 2}, {1, 1, 2}, {0, 1, 2}},
+             {{0, 1, 1}, {1, 1, 1}, {2, 1, 1}},
+             {{2, 1, 0}, {1, 1, 0}, {0, 1, 0}}},
+            {{{2, 2, 0}, {1, 2, 0}, {0, 2, 0}},
+             {{0, 2, 1}, {1, 2, 1}, {2, 2, 1}},
+             {{2, 2, 2}, {1, 2, 2}, {0, 2, 2}}}};
+        int index = 0;
+        for (int x = 0; x < CUBE_SIZE; x++)
+        {
+            for (int y = 0; y < CUBE_SIZE; y++)
+            {
+                for (int z = 0; z < CUBE_SIZE; z++)
+                {
+                    const uint32_t COLOUR = positionsColours[CUBE_MAPPINGS[x][y][z][0]][CUBE_MAPPINGS[x][y][z][1]][CUBE_MAPPINGS[x][y][z][2]];
+                    if (COLOUR)
+                    {
+                        sendColour(leds, index, COLOUR);
+                    }
+                    else
+                    {
+                        sendColour(leds, index, CRGB::Black);
+                    }
+                    index++;
+                }
+            }
+        }
+        FastLED.show();
+    }
+
+    void sendPositionsColours(CRGB leds[], int positions[][3], const int NUMBER_OF_POSITIONS, uint32_t positionsColours[], const long OFF_COLOUR)
+    {
+        static const int CUBE_MAPPINGS[3][3][3][3] = {
+            {{{2, 0, 0}, {1, 0, 0}, {0, 0, 0}},
+             {{0, 0, 1}, {1, 0, 1}, {2, 0, 1}},
+             {{2, 0, 2}, {1, 0, 2}, {0, 0, 2}}},
+            {{{2, 1, 2}, {1, 1, 2}, {0, 1, 2}},
+             {{0, 1, 1}, {1, 1, 1}, {2, 1, 1}},
+             {{2, 1, 0}, {1, 1, 0}, {0, 1, 0}}},
+            {{{2, 2, 0}, {1, 2, 0}, {0, 2, 0}},
+             {{0, 2, 1}, {1, 2, 1}, {2, 2, 1}},
+             {{2, 2, 2}, {1, 2, 2}, {0, 2, 2}}}};
+        int index = 0;
+        int positionsLit = 0;
+        for (int x = 0; x < CUBE_SIZE; x++)
+        {
+            for (int y = 0; y < CUBE_SIZE; y++)
+            {
+                for (int z = 0; z < CUBE_SIZE; z++)
+                {
+                    bool setOnColour = false;
+                    // This checks if we have already lit up all the positions, if we have then there's no need to waste time checking if the current coordinate matches a position
+                    if (positionsLit < NUMBER_OF_POSITIONS)
+                    {
+                        for (int i = 0; i < NUMBER_OF_POSITIONS; i++)
+                        {
+                            // If the current position matches the current coordinate (we use the cube mapping var here to map coordinates to where they should be within the LED cube), then light up with the onColour.
+                            if (arrayEquals(CUBE_MAPPINGS[x][y][z], 3, positions[i], 3))
+                            {
+                                sendColour(leds, index, positionsColours[i]);
+                                setOnColour = true;
+                                positionsLit++;
+                                break;
+                            }
+                        }
+                    }
+                    if (!setOnColour)
+                    {
+                        sendColour(leds, index, OFF_COLOUR);
+                    }
+                    index++;
+                }
+            }
+        }
+        FastLED.show();
     }
 };
 

@@ -3,7 +3,7 @@
 SolidColour::SolidColour(String name)
 {
     this->name = name;
-    this->colour = 0x000000;
+    this->colour = CRGB::Black;
     this->rainbowCube = true;
     FastLED.addLeds<NEOPIXEL, LED_PIN>(leds, 27);
     FastLED.setBrightness(MAX_BRIGHTNESS);
@@ -39,9 +39,4 @@ void SolidColour::update()
         }
         FastLED.show();
     }
-}
-
-int SolidColour::getDelayMultiplier()
-{
-    return 1;
 }

@@ -20,7 +20,6 @@ public:
     SolidColour(String name);
     virtual void update();
     virtual String getName();
-    virtual int getDelayMultiplier();
 };
 
 #endif

@@ -23,7 +23,6 @@ public:
   Snake(String snakeName, bool pelletOn, bool travelThroughWallsOn);
   virtual void update();
   virtual String getName();
-  virtual int getDelayMultiplier();
 
 private:
   virtual void setup();
@@ -40,7 +39,6 @@ private:
   virtual char getAxis(String move);
   virtual int getAxisDirection(String move);
   virtual bool isIncrementMove(String move);
-  virtual void setCubeToPositionsColours(int positions[][3], int noOfPositions, uint32_t positionsColours[], long offColour);
 };
 
 #endif
