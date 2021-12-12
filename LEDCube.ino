@@ -3,6 +3,7 @@
 #include "Snake.h"
 #include "SolidColour.h"
 #include "RotatingPlaneColourCycle.h"
+#include "RotatingCube.h"
 
 const int POTENTIOMETER_PIN = A1;
 const int BUTTON_PIN = 2;
@@ -43,7 +44,7 @@ void loop()
 // Strategy design pattern. When we switch pattern via the button, we discard the previous reference of the pattern object from memory, and asign a new pattern dynamically (aka at run time).
 void updateSelectedPattern()
 {
-  static int selectedPattern = 1;
+  static int selectedPattern = 3;
 
   // selectedPattern++;
   if (selectedPattern != 0)
@@ -61,6 +62,9 @@ void updateSelectedPattern()
     break;
   case 2:
     pattern = new RotatingPlaneColourCycle("Rotating Plane Colour Cycle");
+    break;
+  case 3:
+    pattern = new RotatingCube("Rotating Cube");
     break;
   default:
     selectedPattern = -1;
