@@ -11,16 +11,15 @@ class Snake : public Pattern
   uint32_t snakeColour;
   uint32_t pelletColour;
   bool pelletOn;
-  bool travelThroughWallsOn;
   bool rainbowSnake;
-  const unsigned int DELAY = 100;
+  const unsigned int DELAY = 150;
   unsigned long previousUpdateStartTime = millis();
 
 public:
   // Fixed colour snake
-  Snake(String snakeName, uint32_t snakeColour, uint32_t pelletColour, bool pelletOn, bool travelThroughWallsOn);
+  Snake(String snakeName, uint32_t snakeColour, uint32_t pelletColour, bool pelletOn);
   // Rainbow snake
-  Snake(String snakeName, bool pelletOn, bool travelThroughWallsOn);
+  Snake(String snakeName, bool pelletOn);
   virtual void update();
   virtual String getName();
 

@@ -58,7 +58,7 @@ void updateSelectedPattern()
     pattern = new SolidColour("Rainbow Cube");
     break;
   case 1:
-    pattern = new Snake("Rainbow Snake", true, false);
+    pattern = new Snake("Rainbow Snake", true);
     break;
   case 2:
     pattern = new RotatingPlaneColourCycle("Rotating Plane Colour Cycle");

@@ -20,24 +20,22 @@ int positions[SNAKE_LENGTH + 1][Pattern::DIMENSIONS] = {
     {2, 2, 2}};
 uint32_t positionsColours[4];
 
-Snake::Snake(const String SNAKE_NAME, const uint32_t SNAKE_COLOUR, const uint32_t PELLET_COLOUR, const bool PELLET_ON, const bool TRAVEL_THROUGH_WALLS_ON)
+Snake::Snake(const String SNAKE_NAME, const uint32_t SNAKE_COLOUR, const uint32_t PELLET_COLOUR, const bool PELLET_ON)
 {
   this->name = SNAKE_NAME;
   this->snakeColour = SNAKE_COLOUR;
   this->pelletColour = PELLET_COLOUR;
   this->pelletOn = PELLET_ON;
-  this->travelThroughWallsOn = TRAVEL_THROUGH_WALLS_ON;
   this->rainbowSnake = false;
   setup();
 }
 
-Snake::Snake(const String SNAKE_NAME, const bool PELLET_ON, const bool TRAVEL_THROUGH_WALLS_ON)
+Snake::Snake(const String SNAKE_NAME, const bool PELLET_ON)
 {
   this->name = SNAKE_NAME;
   this->snakeColour = CRGB::Black;
   this->pelletColour = CRGB::Magenta;
   this->pelletOn = PELLET_ON;
-  this->travelThroughWallsOn = TRAVEL_THROUGH_WALLS_ON;
   this->rainbowSnake = true;
   setup();
 }
@@ -156,21 +154,10 @@ bool Snake::canMove(const String MOVE)
   bool canMove = false;
   const int AXIS = getAxisIndex(MOVE);
   // If we can increment/decrement for the supplied move without breaking through the cubes dimensions
-  if (travelThroughWallsOn || (isIncrementMove(MOVE) ? (head[AXIS] < CUBE_AXIS_UPPER_BOUND) : (head[AXIS] > CUBE_AXIS_LOWER_BOUND)))
+  if (isIncrementMove(MOVE) ? (head[AXIS] < CUBE_AXIS_UPPER_BOUND) : (head[AXIS] > CUBE_AXIS_LOWER_BOUND))
   {
     int originalCoordinate = head[AXIS];
     head[AXIS] += getAxisDirection(MOVE);
-    if (travelThroughWallsOn)
-    {
-      if (head[AXIS] < CUBE_AXIS_LOWER_BOUND)
-      {
-        head[AXIS] = CUBE_AXIS_UPPER_BOUND;
-      }
-      else if (head[AXIS] > CUBE_AXIS_UPPER_BOUND)
-      {
-        head[AXIS] = CUBE_AXIS_LOWER_BOUND;
-      }
-    }
     // If this position is not a part of the tail, we can move there
     canMove = !matrixContains(tail, SNAKE_LENGTH, head);
     head[AXIS] = originalCoordinate;
@@ -190,17 +177,6 @@ bool Snake::moveHeadToPill(bool validMoves[], String legalMoves[], const int LEG
       const int AXIS_DIRECTION = getAxisDirection(MOVE);
       const int ORIGINAL_COORDINATE = head[AXIS];
       head[AXIS] += AXIS_DIRECTION;
-      if (travelThroughWallsOn)
-      {
-        if (head[AXIS] < CUBE_AXIS_LOWER_BOUND)
-        {
-          head[AXIS] = CUBE_AXIS_UPPER_BOUND;
-        }
-        else if (head[AXIS] > CUBE_AXIS_UPPER_BOUND)
-        {
-          head[AXIS] = CUBE_AXIS_LOWER_BOUND;
-        }
-      }
       if (arrayEquals(head, 3, pellet, 3))
       {
         return true;
@@ -226,17 +202,6 @@ void Snake::moveHeadInRandomValidDir(bool validMoves[], String legalMoves[])
       const int AXIS = getAxisIndex(MOVE);
       const int AXIS_DIRECTION = getAxisDirection(MOVE);
       head[AXIS] += AXIS_DIRECTION;
-      if (travelThroughWallsOn)
-      {
-        if (head[AXIS] < CUBE_AXIS_LOWER_BOUND)
-        {
-          head[AXIS] = CUBE_AXIS_UPPER_BOUND;
-        }
-        else if (head[AXIS] > CUBE_AXIS_UPPER_BOUND)
-        {
-          head[AXIS] = CUBE_AXIS_LOWER_BOUND;
-        }
-      }
       validMoveFound = true;
     }
   }
