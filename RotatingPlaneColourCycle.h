@@ -8,6 +8,8 @@ class RotatingPlaneColourCycle : public Pattern
 {
     CRGB leds[27];
     String name;
+    const unsigned int DELAY = 150;
+    unsigned long previousUpdateStartTime = millis();
 
 public:
     RotatingPlaneColourCycle(String name);

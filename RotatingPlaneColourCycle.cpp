@@ -24,177 +24,182 @@ int RotatingPlaneColourCycle::getDelayMultiplier()
 
 void RotatingPlaneColourCycle::update()
 {
-    const uint32_t COLOUR = getNextRainbowColour();
-    const uint32_t BLACK = 0x000000;
-    static int iteration = 0;
-    int ledIndex = 0;
-    switch (iteration)
+    const unsigned long currentTime = millis();
+    if (currentTime - previousUpdateStartTime >= DELAY)
     {
-    case 0:
-        // 0
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
+        previousUpdateStartTime = currentTime;
+        const uint32_t COLOUR = getNextRainbowColour();
+        const uint32_t BLACK = CRGB::Black;
+        static int iteration = 0;
+        int ledIndex = 0;
+        switch (iteration)
+        {
+        case 0:
+            // 0
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
 
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
 
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
 
-        // 1
-        sendColour(leds, ledIndex++, COLOUR);
-        sendColour(leds, ledIndex++, COLOUR);
-        sendColour(leds, ledIndex++, COLOUR);
+            // 1
+            sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, COLOUR);
 
-        sendColour(leds, ledIndex++, COLOUR);
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, COLOUR);
 
-        sendColour(leds, ledIndex++, COLOUR);
-        sendColour(leds, ledIndex++, COLOUR);
-        sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, COLOUR);
 
-        // 2
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
+            // 2
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
 
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
 
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
-        break;
-    case 1:
-        // 0
-        sendColour(leds, ledIndex++, COLOUR);
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            break;
+        case 1:
+            // 0
+            sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
 
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, COLOUR);
 
-        sendColour(leds, ledIndex++, COLOUR);
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
 
-        // 1
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, COLOUR);
-        sendColour(leds, ledIndex++, BLACK);
+            // 1
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, BLACK);
 
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
 
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, COLOUR);
-        sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, BLACK);
 
-        // 2
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, COLOUR);
+            // 2
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, COLOUR);
 
-        sendColour(leds, ledIndex++, COLOUR);
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
 
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, COLOUR);
-        break;
-    case 2:
-        // 0
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, COLOUR);
-        sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, COLOUR);
+            break;
+        case 2:
+            // 0
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, BLACK);
 
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, COLOUR);
-        sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, BLACK);
 
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, COLOUR);
-        sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, BLACK);
 
-        // 1
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, COLOUR);
-        sendColour(leds, ledIndex++, BLACK);
+            // 1
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, BLACK);
 
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
 
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, COLOUR);
-        sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, BLACK);
 
-        // 2
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, COLOUR);
-        sendColour(leds, ledIndex++, BLACK);
+            // 2
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, BLACK);
 
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, COLOUR);
-        sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, BLACK);
 
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, COLOUR);
-        sendColour(leds, ledIndex++, BLACK);
-        break;
-    case 3:
-        // 0
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, BLACK);
+            break;
+        case 3:
+            // 0
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, COLOUR);
 
-        sendColour(leds, ledIndex++, COLOUR);
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
 
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, COLOUR);
 
-        // 1
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, COLOUR);
-        sendColour(leds, ledIndex++, BLACK);
+            // 1
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, BLACK);
 
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
 
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, COLOUR);
-        sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, BLACK);
 
-        // 2
-        sendColour(leds, ledIndex++, COLOUR);
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
+            // 2
+            sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
 
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, COLOUR);
 
-        sendColour(leds, ledIndex++, COLOUR);
-        sendColour(leds, ledIndex++, BLACK);
-        sendColour(leds, ledIndex++, BLACK);
-        break;
+            sendColour(leds, ledIndex++, COLOUR);
+            sendColour(leds, ledIndex++, BLACK);
+            sendColour(leds, ledIndex++, BLACK);
+            break;
+        }
+        iteration++;
+        if (iteration > 3)
+        {
+            iteration = 0;
+        }
+        FastLED.show();
     }
-    iteration++;
-    if (iteration > 3)
-    {
-        iteration = 0;
-    }
-    FastLED.show();
 }
