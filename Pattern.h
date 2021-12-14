@@ -64,7 +64,7 @@ public:
 
     uint32_t getNextRainbowColour()
     {
-        static const uint8_t lights[360] = {
+        static const uint8_t lights[360] PROGMEM = {
             0, 0, 0, 0, 0, 1, 1, 2, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 15, 17, 18, 20, 22, 24, 26, 28, 30, 32, 35, 37, 39, 42, 44, 47, 49, 52, 55, 58, 60,
             63, 66, 69, 72, 75, 78, 81, 85, 88, 91, 94, 97, 101, 104, 107, 111, 114, 117, 121, 124, 127, 131, 134, 137, 141, 144, 147, 150, 154, 157, 160, 163,
             167, 170, 173, 176, 179, 182, 185, 188, 191, 194, 197, 200, 202, 205, 208, 210, 213, 215, 217, 220, 222, 224, 226, 229, 231, 232, 234, 236, 238, 239, 241, 242,
@@ -81,9 +81,9 @@ public:
         {
             angle = 0;
         }
-        int red = lights[(angle + 120) % 360];
-        int green = lights[angle];
-        int blue = lights[(angle + 240) % 360];
+        int red = pgm_read_byte(&lights[(angle + 120) % 360]);
+        int green = pgm_read_byte(&lights[angle]);
+        int blue = pgm_read_byte(&lights[(angle + 240) % 360]);
         uint32_t hexColour = ((red & 0xFFL) << 16L) + ((green & 0xFFL) << 8L) + (blue & 0xFFL);
         return hexColour;
     }
@@ -105,7 +105,7 @@ public:
 
     void sendColours(CRGB leds[], uint32_t positionsColours[3][3][3])
     {
-        static const int CUBE_MAPPINGS[3][3][3][3] = {
+        static const int CUBE_MAPPINGS[3][3][3][3] PROGMEM = {
             {{{2, 0, 0}, {1, 0, 0}, {0, 0, 0}},
              {{0, 0, 1}, {1, 0, 1}, {2, 0, 1}},
              {{2, 0, 2}, {1, 0, 2}, {0, 0, 2}}},
@@ -122,7 +122,7 @@ public:
             {
                 for (int z = 0; z < CUBE_SIZE; z++)
                 {
-                    const uint32_t COLOUR = positionsColours[CUBE_MAPPINGS[x][y][z][0]][CUBE_MAPPINGS[x][y][z][1]][CUBE_MAPPINGS[x][y][z][2]];
+                    const uint32_t COLOUR = positionsColours[pgm_read_byte(&CUBE_MAPPINGS[x][y][z][0])][pgm_read_byte(&CUBE_MAPPINGS[x][y][z][1])][pgm_read_byte(&CUBE_MAPPINGS[x][y][z][2])];
                     if (COLOUR)
                     {
                         sendColour(leds, index, COLOUR);
@@ -140,7 +140,7 @@ public:
 
     void sendPositionsColours(CRGB leds[], int positions[][3], const int NUMBER_OF_POSITIONS, uint32_t positionsColours[], const long OFF_COLOUR)
     {
-        static const int CUBE_MAPPINGS[3][3][3][3] = {
+        static const int CUBE_MAPPINGS[3][3][3][3] PROGMEM = {
             {{{2, 0, 0}, {1, 0, 0}, {0, 0, 0}},
              {{0, 0, 1}, {1, 0, 1}, {2, 0, 1}},
              {{2, 0, 2}, {1, 0, 2}, {0, 0, 2}}},
@@ -165,7 +165,8 @@ public:
                         for (int i = 0; i < NUMBER_OF_POSITIONS; i++)
                         {
                             // If the current position matches the current coordinate (we use the cube mapping var here to map coordinates to where they should be within the LED cube), then light up with the onColour.
-                            if (arrayEquals(CUBE_MAPPINGS[x][y][z], 3, positions[i], 3))
+                            int coordinate[3] = {pgm_read_byte(&CUBE_MAPPINGS[x][y][z][0]), pgm_read_byte(&CUBE_MAPPINGS[x][y][z][1]), pgm_read_byte(&CUBE_MAPPINGS[x][y][z][2])};
+                            if (arrayEquals(coordinate, 3, positions[i], 3))
                             {
                                 sendColour(leds, index, positionsColours[i]);
                                 setOnColour = true;
