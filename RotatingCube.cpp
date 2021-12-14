@@ -4,7 +4,7 @@ const int CORNERS[][3] = {{0, 0, 0}, {2, 0, 0}, {2, 0, 2}, {0, 0, 2}, {0, 2, 2},
 const unsigned int ROTATING_CUBE_DELAY = 200;
 const unsigned int CORNER_CHANGE_DELAY = 1000;
 
-unsigned int rotatingCubeCurrentDelay = CORNER_CHANGE_DELAY;
+unsigned int rotatingCubeCurrentDelay = ROTATING_CUBE_DELAY;
 int cornerIndex = 0;
 int animationPhase = 0;
 uint32_t rotatingCubeColour;

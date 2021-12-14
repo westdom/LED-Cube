@@ -10,9 +10,10 @@
 const int POTENTIOMETER_PIN = A1;
 const int BUTTON_PIN = 2;
 const unsigned long MAX_RUNTIME_DURATION = 1000L * 60L * 30L;
+const unsigned long PATTERN_DURATION = 1000L * 10L;
 
 unsigned long lastCubeInteractionStartTime = millis();
-
+unsigned long patternStartTime = millis();
 Pattern *pattern;
 
 void setup()
@@ -30,6 +31,12 @@ void loop()
 
   pattern->update();
 
+  if (currentTime - patternStartTime >= PATTERN_DURATION)
+  {
+    patternStartTime = currentTime;
+    updateSelectedPattern();
+  }
+
   // Checks if the cube has not been turned on/interacted with recently. If it has not, then the board enters "sleep mode" and must be reset to reactivate.
   if (currentTime - lastCubeInteractionStartTime >= MAX_RUNTIME_DURATION)
   {
@@ -46,12 +53,12 @@ void loop()
 // Strategy design pattern. When we switch pattern via the button, we discard the previous reference of the pattern object from memory, and asign a new pattern dynamically (aka at run time).
 void updateSelectedPattern()
 {
-  static int selectedPattern = 4;
+  static int selectedPattern = -1;
 
-  // selectedPattern++;
+  selectedPattern++;
   if (selectedPattern != 0)
   {
-    // delete pattern;
+    delete pattern;
   }
 
   switch (selectedPattern)
