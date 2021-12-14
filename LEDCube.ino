@@ -1,9 +1,9 @@
 #include <avr/sleep.h>
 #include "Pattern.h"
-#include "Snake.h"
 #include "SolidColour.h"
-#include "RotatingPlaneColourCycle.h"
 #include "RotatingCube.h"
+#include "FireBreathing.h"
+#include "Walls.h"
 
 const int POTENTIOMETER_PIN = A1;
 const int BUTTON_PIN = 2;
@@ -44,7 +44,7 @@ void loop()
 // Strategy design pattern. When we switch pattern via the button, we discard the previous reference of the pattern object from memory, and asign a new pattern dynamically (aka at run time).
 void updateSelectedPattern()
 {
-  static int selectedPattern = 3;
+  static int selectedPattern = 0;
 
   // selectedPattern++;
   if (selectedPattern != 0)
@@ -58,13 +58,13 @@ void updateSelectedPattern()
     pattern = new SolidColour("Rainbow Cube");
     break;
   case 1:
-    pattern = new Snake("Rainbow Snake", true);
+    pattern = new RotatingCube("Rotating Cube");
     break;
   case 2:
-    pattern = new RotatingPlaneColourCycle("Rotating Plane Colour Cycle");
+    pattern = new FireBreathing("Fire Breathing");
     break;
   case 3:
-    pattern = new RotatingCube("Rotating Cube");
+    pattern = new Walls("Walls");
     break;
   default:
     selectedPattern = -1;

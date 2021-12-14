@@ -8,7 +8,7 @@
 class Pattern
 {
 public:
-    const static int MAX_BRIGHTNESS = 50;
+    const static int MAX_BRIGHTNESS = 40;
     const static int LED_PIN = 4;
     const static int DIMENSIONS = 3;
     const static int CUBE_SIZE = 3;
