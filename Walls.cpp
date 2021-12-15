@@ -1,6 +1,7 @@
 #include "Walls.h"
 
-const unsigned int wallsDelay = 200;
+const unsigned int defaultWallsDelay = 200;
+unsigned int wallsDelay = defaultWallsDelay;
 int wallsAxis = 0;
 int wallsStage = 0;
 
@@ -36,53 +37,68 @@ void Walls::update()
     {
         previousUpdateStartTime = currentTime;
         wallsColour = getNextRainbowColour();
+        wallsDelay = defaultWallsDelay;
+        resetColours();
         switch (wallsAxis)
         {
         case 0:
-            resetColours();
             for (int y = 0; y < 3; y++)
             {
                 wallsColours[wallsStage < 3 ? wallsStage : 5 - wallsStage][y][0] = wallsColour;
                 wallsColours[wallsStage < 3 ? wallsStage : 5 - wallsStage][y][1] = wallsColour;
                 wallsColours[wallsStage < 3 ? wallsStage : 5 - wallsStage][y][2] = wallsColour;
             }
-            wallsStage++;
-            if (wallsStage == 6)
-            {
-                wallsAxis++;
-                wallsStage = 0;
-            }
             break;
         case 1:
-            resetColours();
             for (int z = 0; z < 3; z++)
             {
                 wallsColours[0][wallsStage < 3 ? wallsStage : 5 - wallsStage][z] = wallsColour;
                 wallsColours[1][wallsStage < 3 ? wallsStage : 5 - wallsStage][z] = wallsColour;
                 wallsColours[2][wallsStage < 3 ? wallsStage : 5 - wallsStage][z] = wallsColour;
             }
-            wallsStage++;
-            if (wallsStage == 6)
-            {
-                wallsAxis++;
-                wallsStage = 0;
-            }
             break;
         case 2:
-            resetColours();
             for (int x = 0; x < 3; x++)
             {
                 wallsColours[x][0][wallsStage < 3 ? wallsStage : 5 - wallsStage] = wallsColour;
                 wallsColours[x][1][wallsStage < 3 ? wallsStage : 5 - wallsStage] = wallsColour;
                 wallsColours[x][2][wallsStage < 3 ? wallsStage : 5 - wallsStage] = wallsColour;
             }
-            wallsStage++;
-            if (wallsStage == 6)
+            break;
+        case 3:
+            for (int y = 0; y < 3; y++)
             {
-                wallsAxis = 0;
-                wallsStage = 0;
+                wallsColours[wallsStage < 3 ? 2 - wallsStage : wallsStage - 3][y][0] = wallsColour;
+                wallsColours[wallsStage < 3 ? 2 - wallsStage : wallsStage - 3][y][1] = wallsColour;
+                wallsColours[wallsStage < 3 ? 2 - wallsStage : wallsStage - 3][y][2] = wallsColour;
             }
             break;
+        case 4:
+            for (int z = 0; z < 3; z++)
+            {
+                wallsColours[0][wallsStage < 3 ? 2 - wallsStage : wallsStage - 3][z] = wallsColour;
+                wallsColours[1][wallsStage < 3 ? 2 - wallsStage : wallsStage - 3][z] = wallsColour;
+                wallsColours[2][wallsStage < 3 ? 2 - wallsStage : wallsStage - 3][z] = wallsColour;
+            }
+            break;
+        case 5:
+            for (int x = 0; x < 3; x++)
+            {
+                wallsColours[x][0][wallsStage < 3 ? 2 - wallsStage : wallsStage - 3] = wallsColour;
+                wallsColours[x][1][wallsStage < 3 ? 2 - wallsStage : wallsStage - 3] = wallsColour;
+                wallsColours[x][2][wallsStage < 3 ? 2 - wallsStage : wallsStage - 3] = wallsColour;
+            }
+            break;
+        }
+        wallsStage++;
+        if (wallsStage == 6)
+        {
+            wallsAxis++;
+            if(wallsAxis > 5) {
+                wallsAxis = 0;
+            }
+            wallsStage = 0;
+            wallsDelay *= 2;
         }
         sendColours(leds, wallsColours);
     }
