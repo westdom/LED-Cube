@@ -10,7 +10,7 @@
 const int POTENTIOMETER_PIN = A1;
 const int BUTTON_PIN = 2;
 const unsigned long MAX_RUNTIME_DURATION = 1000L * 60L * 30L;
-const unsigned long PATTERN_DURATION = 1000L * 10L;
+const unsigned long PATTERN_DURATION = 1000L * 30L;
 
 unsigned long lastCubeInteractionStartTime = millis();
 unsigned long patternStartTime = millis();
