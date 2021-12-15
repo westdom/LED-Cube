@@ -65,8 +65,19 @@ void RotatingCube::update()
             break;
         case 3:
             setRotatingCubeColours(rotatingCubeColour, 2);
+            animationPhase++;
+            break;
+        case 4:
+            setRotatingCubeColours(CRGB::Black, 2);
+            setRotatingCubeColours(rotatingCubeColour, 1);
+            animationPhase++;
+            break;
+        case 5:
+            setRotatingCubeColours(CRGB::Black, 1);
+            rotatingCubeColours[currentCornerX][currentCornerY][currentCornerZ] = rotatingCubeColour;
             cornerIndex++;
-            if(cornerIndex >= 8) {
+            if (cornerIndex >= 8)
+            {
                 cornerIndex = 0;
             }
             animationPhase = 0;
